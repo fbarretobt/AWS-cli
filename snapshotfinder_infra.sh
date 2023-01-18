@@ -33,7 +33,11 @@ infra(){
 			aws ec2 describe-images --image-ids $ami --query 'Images[*].{ EBS_ecryption:BlockDeviceMappings[*].Ebs.Encrypted, DeleteOnTermination:BlockDeviceMappings[*].Ebs.DeleteOnTermination, Image_Name: Name, State:State}'   --output table
 		elif [[ "$policy" =~ .*"policy-".* ]]; then
 			echo "===== Policy Info"
-			aws dlm get-lifecycle-policy --policy-id $policy  --output 
+			policy_info=$(aws dlm get-lifecycle-policy --policy-id $policy --output json )
+			echo "DEscription : " jq -r '.Policy.Description' <<< "$policy"
+			echo "Policy ID : " jq -r '.Policy.PolicyId' <<< "$policy"
+			echo "State : " jq -r '.Policy.State' <<< "$policy"
+			
 		else
 			echo "No other Info ********"
 		fi
