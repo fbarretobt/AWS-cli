@@ -9,11 +9,11 @@ do
 
 
 	echo "=========================================================================================================="
-	echo "||                                                                                                      ||"
-	echo "||                                                                                                      ||"
-	echo "||     AMI information based on Snapshot description                                                    ||"
-	echo "||                                                                                                      ||"
-	echo "||                                                                                                      ||"
+	echo "                                                                                                     "
+	echo "                                                                                                      "
+	echo "     AMI information based on Snapshot $i description                                                 "
+	echo "                                                                                                      "
+	echo "                                                                                                      "
 	echo "=========================================================================================================="
 	
 
