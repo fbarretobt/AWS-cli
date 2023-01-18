@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-infra(){
+single_region(){
 	
 	Snapshot=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[].SnapshotId' --filters Name=encrypted,Values=false --output text )
 
@@ -55,19 +55,74 @@ infra(){
 }
 
 
+multi_region(){
+	for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[RegionName]')
+	do 
+		echo $REGION
+
+		Snapshot=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[].SnapshotId' --filters Name=encrypted,Values=false --output text --region $REGION )
+
+
+		for i in $Snapshot
+		do 
+
+
+			echo "=========================================================================================================="
+			echo "                                                                                                     "
+			echo "                                                                                                      "
+			echo "     AMI information based on Snapshot $i description                                                 "
+			echo "                                                                                                      "
+			echo "                                                                                                      "
+			echo "=========================================================================================================="
+			
+
+			snapinfo=$(aws ec2 describe-snapshots --owner-ids self --snapshot-ids $i --region $REGION)
+
+
+			snap_id=$(jq -r '.[] | .[] | .SnapshotId' <<< "$snapinfo")
+			encryption=$(jq -r '.[] | .[] | .Encrypted' <<< "$snapinfo")
+			ami=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $5}')
+			policy=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $4}')
+
+
+			if [[ "$ami" =~ .*"ami-".* ]]; then
+				echo "===== AMI info"
+				aws ec2 describe-images --image-ids $ami --query 'Images[*].{ EBS_ecryption:BlockDeviceMappings[*].Ebs.Encrypted, DeleteOnTermination:BlockDeviceMappings[*].Ebs.DeleteOnTermination, Image_Name: Name, State:State}'   --output table --region $REGION
+			elif [[ "$policy" =~ .*"policy-".* ]]; then
+				echo "===== Policy Info"
+				policy_info=$(aws dlm get-lifecycle-policy --policy-id $policy --output json --region $REGION) 
+				
+				
+				description=$(jq -r '.Policy.Description' <<< "$policy_info")
+				echo "DEscription : " $description
+				policy_id=$(jq -r '.Policy.PolicyId' <<< "$policy_info")
+				echo "Policy ID : " $policy_id
+				state=$(jq -r '.Policy.State' <<< "$policy_info")
+				echo "State : " $state
+				
+			else
+				echo "No other Info ********"
+			fi
+
+			echo "===== Snapshot info"
+			aws ec2 describe-snapshots --owner-ids self --snapshot-ids $snap_id --output table --region $REGION
+
+		done
+
+
+	done
+
+}
 
 
 
-while getopts 'ipr:' OPTION; do
+while getopts 'sm:' OPTION; do
   case "$OPTION" in
-    i)
-      infra
+    s)
+      single_region
       ;;
-    p)
-      pra
-      ;;
-    r)
-      rs
+    m)
+      multi_region
       ;;
     ?)
       echo "script usage: $(basename \$0) [-i] [-i] [-r]" >&2
