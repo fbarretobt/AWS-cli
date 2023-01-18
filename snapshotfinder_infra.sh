@@ -126,6 +126,7 @@ for arg in "$@"; do
       ;;
 	-v | --version)
 	  Echo "Version 1.0"
+	  ;;
     ?)
       echo "script usage:  [-s] [-m] " >&2
 	  echo "Use -m / --multi for multi region "
