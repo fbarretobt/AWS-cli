@@ -3,7 +3,7 @@
 
 infra(){
 	
-	Snapshot=$(aws ec2 describe-snapshots --owner-id self --filters Name=encrypted,Values=false --output text | awk '{print $10}')
+	Snapshot=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[].SnapshotId' --filters Name=encrypted,Values=false --output text )
 
 
 	for i in $Snapshot
@@ -28,7 +28,7 @@ infra(){
 
 		
 		echo "===== AMI info"
-		aws ec2 describe-images --image-ids ami-022b4ada5cc036418 --query 'Images[*].{ EBS_ecryption:BlockDeviceMappings[*].Ebs.Encrypted, DeleteOnTermination:BlockDeviceMappings[*].Ebs.DeleteOnTermination, Image_Name: Name, State:State}'   --output 
+		aws ec2 describe-images --image-ids $ami --query 'Images[*].{ EBS_ecryption:BlockDeviceMappings[*].Ebs.Encrypted, DeleteOnTermination:BlockDeviceMappings[*].Ebs.DeleteOnTermination, Image_Name: Name, State:State}'   --output 
 	table
 
 		echo "===== Snapshot info"
