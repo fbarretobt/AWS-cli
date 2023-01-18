@@ -116,16 +116,17 @@ multi_region(){
 
 
 
-while getopts 'sm:' OPTION; do
-  case "$OPTION" in
-    s)
+for arg in "$@"; do
+  case $arg in
+    s | --single)
       single_region
       ;;
-    m)
+    m | --multi)
       multi_region
       ;;
     ?)
-      echo "script usage: $(basename \$0) [-s] [-m] " >&2
+      echo "script usage:  [-s] [-m] " >&2
+	  echo "use -m for multi region or -s for single region"
       exit 1
       ;;
   esac
