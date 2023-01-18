@@ -1,10 +1,12 @@
 #!/bin/sh
 
-AMI=$(aws ec2 describe-snapshots --owner-id self --filters Name=encrypted,Values=false --output text | awk '{print $6}')
+Snapshot=$(aws ec2 describe-snapshots --owner-id self --filters Name=encrypted,Values=false --output text)
 
-for i in $AMI
+for i in $Snapshot
 do 
-	aws ec2 describe-images --image-ids $i  --query 'Images[*].{Image_Name: Name, State:State}'   --output table 
+
+	AMI=$($i| awk '{print $6}')
+	snap_ID=$($i| awk '{print $10}')
 	echo "=========================================================================================================="
 	echo "||                                                                                                      ||"
 	echo "||                                                                                                      ||"
@@ -12,6 +14,7 @@ do
 	echo "||                                                                                                      ||"
 	echo "||                                                                                                      ||"
 	echo "=========================================================================================================="
-	aws ec2 describe-images --image-ids $i  --query 'Images[*].{Image_Name: Name, State:State}'   --output table 
+	aws ec2 describe-images --image-ids $ami  --query 'Images[*].{Image_Name: Name, State:State}'   --output table 
+	aws ec2 describe-snapshots --snapshot-ids $snap_ID  --output table
 done 
 
