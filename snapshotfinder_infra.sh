@@ -27,15 +27,20 @@ infra(){
 		ami=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $5}')
 		policy=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $5}')
 
+		echo $policy
+
 		if [[ "$ami" =~ .*"ami-".* ]]; then
 			echo "===== AMI info"
 			aws ec2 describe-images --image-ids $ami --query 'Images[*].{ EBS_ecryption:BlockDeviceMappings[*].Ebs.Encrypted, DeleteOnTermination:BlockDeviceMappings[*].Ebs.DeleteOnTermination, Image_Name: Name, State:State}'   --output table
-		if [[ "$policy" =~ .*"policy-".* ]]; then
+		elif [[ "$policy" =~ .*"policy-".* ]]; then
 			echo "===== Policy Info"
+		else
+			echo "No other Info ********"
 		fi
 
 		echo "===== Snapshot info"
 		aws ec2 describe-snapshots --owner-ids self --snapshot-ids $snap_id --output table
+		
 	done
 
 }
