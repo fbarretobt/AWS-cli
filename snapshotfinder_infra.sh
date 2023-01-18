@@ -125,7 +125,7 @@ while getopts 'sm:' OPTION; do
       multi_region
       ;;
     ?)
-      echo "script usage: $(basename \$0) [-i] [-i] [-r]" >&2
+      echo "script usage: $(basename \$0) [-s] [-m] " >&2
       exit 1
       ;;
   esac
