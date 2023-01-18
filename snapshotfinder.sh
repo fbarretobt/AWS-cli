@@ -4,6 +4,6 @@ AMI=$(aws ec2 describe-snapshots --owner-id self --filters Name=encrypted,Values
 
 for i in AMI
 do 
-	echo $i;
+	aws ec2 describe-images --image-ids $i  --query 'Images[*].{Image_Name: Name, State:State}'   --output table 
 done 
 
