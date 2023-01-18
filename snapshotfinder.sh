@@ -1,12 +1,13 @@
 #!/bin/sh
 
-Snapshot=$(aws ec2 describe-snapshots --owner-id self --filters Name=encrypted,Values=false --output text)
+Snapshot=$(aws ec2 describe-snapshots --owner-id self --filters Name=encrypted,Values=false --output text | awk '{print $10}')
+
+
 
 for i in $Snapshot
 do 
 
-	AMI=$($i| awk '{print $6}')
-	snap_ID=$($i| awk '{print $10}')
+
 	echo "=========================================================================================================="
 	echo "||                                                                                                      ||"
 	echo "||                                                                                                      ||"
@@ -14,7 +15,19 @@ do
 	echo "||                                                                                                      ||"
 	echo "||                                                                                                      ||"
 	echo "=========================================================================================================="
-	aws ec2 describe-images --image-ids $ami  --query 'Images[*].{Image_Name: Name, State:State}'   --output table 
-	aws ec2 describe-snapshots --snapshot-ids $snap_ID  --output table
-done 
+	
 
+	snapinfo=$(aws ec2 describe-snapshots --owner-ids self --snapshot-ids $i)
+
+
+	snap_id=$(jq -r '.[] | .[] | .SnapshotId' <<< "$snapinfo")
+	encryption=$(jq -r '.[] | .[] | .Encrypted' <<< "$snapinfo")
+	ami=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $5}')
+
+	
+	echo "===== AMI info"
+	aws ec2 describe-images --image-ids $ami  --query 'Images[*].{Image_Name: Name, State:State}'   --output table 
+
+	echo "===== Snapshot info"
+	aws ec2 describe-snapshots --owner-ids self --snapshot-ids $snap_id --output table
+done 
