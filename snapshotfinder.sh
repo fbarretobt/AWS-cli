@@ -26,7 +26,8 @@ do
 
 	
 	echo "===== AMI info"
-	aws ec2 describe-images --image-ids $ami  --query 'Images[*].{Image_Name: Name, State:State}'   --output table 
+	aws ec2 describe-images --image-ids ami-022b4ada5cc036418 --query 'Images[*].{ EBS_ecryption:BlockDeviceMappings[*].Ebs.Encrypted, DeleteOnTermination:BlockDeviceMappings[*].Ebs.DeleteOnTermination, Image_Name: Name, State:State}'   --output 
+table
 
 	echo "===== Snapshot info"
 	aws ec2 describe-snapshots --owner-ids self --snapshot-ids $snap_id --output table
