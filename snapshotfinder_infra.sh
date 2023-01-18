@@ -53,13 +53,13 @@ pra(){
 while getopts 'ipr:' OPTION; do
   case "$OPTION" in
     i)
-      infra()
+      infra
       ;;
     p)
-      pra()
+      pra
       ;;
     r)
-      rs()
+      rs
       ;;
     ?)
       echo "script usage: $(basename \$0) [-i] [-i] [-r]" >&2
