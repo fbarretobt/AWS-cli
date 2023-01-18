@@ -34,9 +34,12 @@ infra(){
 		elif [[ "$policy" =~ .*"policy-".* ]]; then
 			echo "===== Policy Info"
 			policy_info=$(aws dlm get-lifecycle-policy --policy-id $policy --output json )
-			echo "DEscription : " jq -r '.Policy.Description' <<< "$policy"
-			echo "Policy ID : " jq -r '.Policy.PolicyId' <<< "$policy"
-			echo "State : " jq -r '.Policy.State' <<< "$policy"
+			description=$(jq -r '.Policy.Description' <<< "$policy")
+			echo "DEscription : " $description
+			policy_id=$(jq -r '.Policy.PolicyId' <<< "$policy")
+			echo "Policy ID : " $policy_id
+			state=$(jq -r '.Policy.State' <<< "$policy")
+			echo "State : " $state
 			
 		else
 			echo "No other Info ********"
