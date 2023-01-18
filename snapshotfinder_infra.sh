@@ -118,15 +118,18 @@ multi_region(){
 
 for arg in "$@"; do
   case $arg in
-    s | --single)
+    -s | --single)
       single_region
       ;;
-    m | --multi)
+    -m | --multi)
       multi_region
       ;;
+	-v | --version)
+	  Echo "Version 1.0"
     ?)
       echo "script usage:  [-s] [-m] " >&2
-	  echo "use -m for multi region or -s for single region"
+	  echo "Use -m / --multi for multi region "
+	  echo "Use -s / --single for single region active region"
       exit 1
       ;;
   esac
