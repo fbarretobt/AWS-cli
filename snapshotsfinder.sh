@@ -22,7 +22,7 @@ do
     encryption=$(jq -r '.[] | .[] | .Encrypted' <<< "$snapinfo")
     ami=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $5}')
     policy=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $4}')
-    name=$(jq -r '.[] | .[] | .Tags' <<< "$snapinfo")
+    name=$(jq -r '.[] | .[] | .Tags[9].Value' <<< "$snapinfo")
 
 
     policyinfo=$(aws dlm get-lifecycle-policy --policy-id $policy )
