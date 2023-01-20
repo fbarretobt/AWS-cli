@@ -1,11 +1,12 @@
 #!/bin/sh
 
+Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[].SnapshotId' --output text )
 
-for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[RegionName]')
+
+for i in $Snapshots
 do 
 
-    Snapshot=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[].SnapshotId' --output text )
-
+    
     echo "=========================================================================================================="
     echo "   "                                                                                                  
     echo "   "                                                                                                   
@@ -14,14 +15,11 @@ do
     echo "   "                                                                                                    
     echo "=========================================================================================================="
 			
-    snapinfo=$(aws ec2 describe-snapshots --owner-ids self --snapshot-ids $i)
+    snapinfo=$(aws ec2 describe-snapshots --snapshot-ids $i)
 
 
     snap_id=$(jq -r '.[] | .[] | .SnapshotId' <<< "$snapinfo")
-    encryption=$(jq -r '.[] | .[] | .Encrypted' <<< "$snapinfo")
-    ami=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $5}')
-    policy=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $4}')
-    name=$(jq -r '.[] | .[] | .[] | .Name' <<< "$snapinfo" )
+
 
     echo "ID : " $snap_id
 done
