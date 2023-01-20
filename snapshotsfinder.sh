@@ -27,7 +27,7 @@ do
 
     policyinfo=$(aws dlm get-lifecycle-policy --policy-id $policy )
 
-    policy_name=$(jq -r '.[] | .Description' <<< "$snapinfo")
+    policy_name=$(jq -r '.[] | .[] | .Description' <<< "$policyinfo")
 
     echo "Snap ID : " $snap_id
     echo "Encryption : " $encryption
