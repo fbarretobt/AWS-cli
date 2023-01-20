@@ -4,7 +4,7 @@
 for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[RegionName]')
 do 
 
-    Snapshot=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[].SnapshotId' --filters Name=encrypted,Values=false --output text )
+    Snapshot=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[].SnapshotId' --output text )
 
     echo "=========================================================================================================="
     echo "   "                                                                                                  
@@ -23,5 +23,5 @@ do
     policy=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $4}')
     name=$(jq -r '.[] | .[] | .[] | .Name' <<< "$snapinfo" )
 
-    echo "Name : " $name
+    echo "ID : " $snap_id
 done
