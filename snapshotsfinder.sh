@@ -19,7 +19,14 @@ do
 
 
     snap_id=$(jq -r '.[] | .[] | .SnapshotId' <<< "$snapinfo")
+    encryption=$(jq -r '.[] | .[] | .Encrypted' <<< "$snapinfo")
+	ami=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $5}')
+	policy=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $4}')
+    name=$(jq -r '.[] | .[] | .[] | .Name' <<< "$snapinfo")
 
 
-    echo "ID : " $snap_id
+    echo "Snap ID : " $snap_id
+    echo "Encryption : " $encryption
+    echo "Policy : " $policy
+
 done
