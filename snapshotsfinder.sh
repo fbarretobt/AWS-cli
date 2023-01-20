@@ -1,6 +1,6 @@
 #!/bin/sh
 
-Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[].SnapshotId' --output text )
+Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query "Snapshots[?(StartTime<='$(date --date='-2 month' '+%Y-%m-%d')')].{ID:SnapshotId}" --output text )
 
 
 for i in $Snapshots
