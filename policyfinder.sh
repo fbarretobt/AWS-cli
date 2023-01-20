@@ -43,8 +43,6 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
 				echo "State : " $state
             fi
 
-			echo "===== Snapshot info"
-			aws ec2 describe-snapshots --owner-ids self --snapshot-ids $snap_id --output table --region $REGION
 
 		done
 
