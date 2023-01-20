@@ -8,12 +8,12 @@ do
 
 
     echo "=========================================================================================================="
-    echo "   "                                                                                                  
-    echo "   "                                                                                                   
+    echo "||"                                                                                                  
+    echo "||"                                                                                                   
     echo "     AMI information based on Snapshot $i description  "                                                
     echo "   "                                                                                                  
     echo "   "                                                                                                    
-    echo "=========================================================================================================="
+
 
     snapinfo=$(aws ec2 describe-snapshots --snapshot-ids $i)
 
@@ -27,11 +27,17 @@ do
 
     policyinfo=$(aws dlm get-lifecycle-policy --policy-id $policy )
 
-    policy_name=$(jq -r '.[] | .[] | .Description' <<< "$policyinfo")
+    policy_name=$(jq -r '.[] | .Description' <<< "$policyinfo")
 
     echo "Snap ID : " $snap_id
     echo "Encryption : " $encryption
     echo "Policy Name : " $policy_name
-    echo "Name : " $name
+    echo "Snapshot Name : " $name
+
+    echo "||"
+    echo "||"
+    echo "||"
+    echo "||"
+    echo "=========================================================================================================="
 
 done
