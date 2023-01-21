@@ -27,7 +27,8 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
         ami=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $5}')
         policy=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $4}')
         name=$(jq -r '.[] | .[] | .Tags[] | select(.Key=="Name").Value' <<< "$snapinfo")
-
+        date=$(jq -r '.[] | .[] | .StartTime' <<< "$snapinfo")
+        volume=$(jq -r '.[] | .[] | .VolumeId' <<< "$snapinfo")
 
         policyinfo=$(aws dlm get-lifecycle-policy --policy-id $policy --region $REGION)
 
@@ -40,6 +41,8 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
             echo "Encryption : " $encryption
             echo "Policy Name : " $policy_name
             echo "Snapshot Name : " $name
+            echo "Creation Date : " $date
+            echo "Volume : " $volume
         else    
 
             echo ""
