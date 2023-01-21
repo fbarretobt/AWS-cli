@@ -26,7 +26,7 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
         encryption=$(jq -r '.[] | .[] | .Encrypted' <<< "$snapinfo")
         ami=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $5}')
         policy=$(jq -r '.[] | .[] | .Description' <<< "$snapinfo" | awk '{print $4}')
-        name=$(jq -r '.[] | .[] | .Tags[] | select(.Key|IN("Name","Value")) | "\(.Value)"' <<< "$snapinfo")
+        name=$(jq -r '.[] | .[] | .Tags[] | select(.Key=="Name").Value' <<< "$snapinfo")
 
 
         policyinfo=$(aws dlm get-lifecycle-policy --policy-id $policy --region $REGION)
