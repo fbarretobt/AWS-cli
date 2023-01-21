@@ -59,12 +59,17 @@ done
 
 
 check_flag(){
-    if ${flag} == null
-    do 
-        echo "No Flags"
-    elif ${flag} == "s"
-        echo "S flag is " ${OPTARG}
-    done
+    if [[ -z "${flag}" ]] ; then
+        echo "No Flags set"
+    elif [[ -n "${s}" ]]; then
+        echo "s flag is " $s
+    elif [[ -n "${p}" ]]; then
+        echo "p flag is " $p
+    elif [[ -n "${i}" ]]; then
+        echo "i flag is " $i
+    elif [[ -n "${r}" ]]; then
+        echo "r flag is " $r
+    fi
 }
 
 
