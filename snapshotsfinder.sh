@@ -58,21 +58,17 @@ done
 }
 
 
-while getopts 'sp:' OPTION; do
-  case "$OPTION" in
-    s)
-      s="$OPTARG"
-      echo "s = $s"
-      ;;
-    p)
-      p="$OPTARG"
-      echo "p = $p"
-      ;;
-
-    ?)
-      echo "script usage: $(basename \$0) [-l] [-h] [-a somevalue]" >&2
-      exit 1
-      ;;
-  esac
+while getopts s:p:i: flag
+do
+    case "${flag}" in
+        s) s=${OPTARG};;
+        p) p=${OPTARG};;
+        i) i=${OPTARG};;
+    esac
 done
-shift "$(($OPTIND -1))"
+
+
+
+echo "Snap = $s "
+echo "Policy = $p"
+echo "Image = $i
