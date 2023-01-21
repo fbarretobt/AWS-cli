@@ -58,7 +58,7 @@ done
 }
 
 
-check_flag(s, p, i, r, v){
+check_flag(){
     echo $s
     echo $p 
     echo $i
@@ -80,16 +80,16 @@ while getopts s:p:i:r:v: flag
 do
     case "${flag}" in
         s) s=${OPTARG} 
-           check_flag(s, p, i, r, v)
+           check_flag $s $p $i $r $v
         ;;
         p) p=${OPTARG}
-           check_flag(s, p, i, r, v)
+           check_flag $s $p $i $r $v
         ;;
         i) i=${OPTARG}
-           check_flag(s, p, i, r, v)
+           check_flag $s $p $i $r $v
         ;;
         r) r=${OPTARG}
-           check_flag(s, p, i, r, v)
+           check_flag $s $p $i $r $v
         ;;
         v) i=${OPTARG}
            version
