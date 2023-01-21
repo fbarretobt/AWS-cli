@@ -80,18 +80,18 @@ while getopts s:p:i:r:v: flag
 do
     case "${flag}" in
         s) s=${OPTARG} 
-           check_flag $s $p $i $r $v
+           check_flag $s
         ;;
         p) p=${OPTARG}
-           check_flag $s $p $i $r $v
+           check_flag $p
         ;;
         i) i=${OPTARG}
-           check_flag $s $p $i $r $v
+           check_flag $i 
         ;;
         r) r=${OPTARG}
-           check_flag $s $p $i $r $v
+           check_flag $r
         ;;
-        v) i=${OPTARG}
+        v) 
            version
         ;;
         *) echo "Invalid option: -$flag" 
