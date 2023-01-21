@@ -20,7 +20,7 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
 
 
         snapinfo=$(aws ec2 describe-snapshots --snapshot-ids $i --region $REGION)
-
+        
 
         snap_id=$(jq -r '.[] | .[] | .SnapshotId' <<< "$snapinfo")
         encryption=$(jq -r '.[] | .[] | .Encrypted' <<< "$snapinfo")
@@ -29,8 +29,17 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
         name=$(jq -r '.[] | .[] | .Tags[] | select(.Key=="Name").Value' <<< "$snapinfo")
         date=$(jq -r '.[] | .[] | .StartTime' <<< "$snapinfo")
         volume=$(jq -r '.[] | .[] | .VolumeId' <<< "$snapinfo")
+        
+
+
+        volumeinfo=$(aws ec2 describe-volumes --volume-ids $volume --region $REGION)
+
+        instance=$(jq -r '.[] | .[] | .Attachments[] | .InstanceId' <<< "$volumeinfo")
+        VolumeState=$(jq -r '.[] | .[] | .State' <<< "$volumeinfo")
 
         policyinfo=$(aws dlm get-lifecycle-policy --policy-id $policy --region $REGION)
+
+        instancestatus=$(aws ec2 describe-instances --instance-ids  $instance --query "Reservations[*].Instances[*].{Status:State.Name}" --region $REGION)
 
         if [ $? == 0 ]; then
             echo ""
@@ -43,6 +52,8 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
             echo "Snapshot Name : " $name
             echo "Creation Date : " $date
             echo "Volume : " $volume
+            echo "Volume State : " $VolumeState
+            echo "Instance Status : " $instancestatus
         else    
 
             echo ""
