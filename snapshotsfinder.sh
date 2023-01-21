@@ -58,17 +58,45 @@ done
 }
 
 
-while getopts s:p:i: flag
+check_flag(s, p, i, r, v){
+    echo $s
+    echo $p 
+    echo $i
+    echo $r
+}
+
+
+version(){
+
+    echo "Version 1.0"
+}
+
+help(){
+    echo "Help"
+}
+
+
+while getopts s:p:i:r:v: flag
 do
     case "${flag}" in
-        s) s=${OPTARG};;
-        p) p=${OPTARG};;
-        i) i=${OPTARG};;
+        s) s=${OPTARG} 
+           check_flag(s, p, i, r, v)
+        ;;
+        p) p=${OPTARG}
+           check_flag(s, p, i, r, v)
+        ;;
+        i) i=${OPTARG}
+           check_flag(s, p, i, r, v)
+        ;;
+        r) r=${OPTARG}
+           check_flag(s, p, i, r, v)
+        ;;
+        v) i=${OPTARG}
+           version
+        ;;
+        *) echo "Invalid option: -$flag" 
+           help
+        ;;
+
     esac
 done
-
-
-
-echo "Snap = $s "
-echo "Policy = $p"
-echo "Image = $i "
