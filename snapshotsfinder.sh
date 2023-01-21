@@ -27,11 +27,14 @@ do
 
 
     policyinfo=$(aws dlm get-lifecycle-policy --policy-id $policy)
-    run_code=$?
 
-    #echo $run_code
-    echo "Return Code : " $run_code
-
+    if [ $? == 0 ]; then
+        echo ""
+        echo "Policy NoT found "
+        continue
+    else    
+        break
+    fi
 
     policy_name=$(jq -r '.[] | .Description' <<< "$policyinfo")
 
