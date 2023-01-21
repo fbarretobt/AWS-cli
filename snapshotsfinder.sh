@@ -30,18 +30,22 @@ do
 
     if [ $? == 0 ]; then
         echo ""
-        echo "Policy NoT found "
+
+        policy_name=$(jq -r '.[] | .Description' <<< "$policyinfo")
+
+        echo "Snap ID : " $snap_id
+        echo "Encryption : " $encryption
+        echo "Policy Name : " $policy_name
+        echo "Snapshot Name : " $name
+
+        
         continue
     else    
+
+        echo "Policy NoT found "
         break
     fi
 
-    policy_name=$(jq -r '.[] | .Description' <<< "$policyinfo")
-
-    echo "Snap ID : " $snap_id
-    echo "Encryption : " $encryption
-    echo "Policy Name : " $policy_name
-    echo "Snapshot Name : " $name
 
     echo "||"
     echo "||"
