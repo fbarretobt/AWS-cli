@@ -59,9 +59,7 @@ done
 
 
 check_flag(){
-    if [[ -z "${flag}" ]] ; then
-        echo "No Flags set"
-    elif [[ -n "${s}" ]]; then
+    if [[ -n "${s}" ]]; then
         echo "s flag is " $s
     elif [[ -n "${p}" ]]; then
         echo "p flag is " $p
@@ -69,6 +67,8 @@ check_flag(){
         echo "i flag is " $i
     elif [[ -n "${r}" ]]; then
         echo "r flag is " $r
+    else
+        echo "NO parameters"
     fi
 }
 
