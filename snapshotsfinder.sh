@@ -59,7 +59,12 @@ done
 
 
 check_flag(){
-    echo ${OPTARG}
+    if ${flag} == null
+    do 
+        echo "No Flags"
+    elif ${flag} == "s"
+        echo "S flag is " ${OPTARG}
+    done
 }
 
 
