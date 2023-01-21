@@ -71,4 +71,4 @@ done
 
 echo "Snap = $s "
 echo "Policy = $p"
-echo "Image = $i
+echo "Image = $i "
