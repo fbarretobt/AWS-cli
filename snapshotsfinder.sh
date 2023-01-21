@@ -3,7 +3,7 @@
 for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[RegionName]') ; 
     do
 
-    Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query "Snapshots[?(StartTime<='$(date --date='-2 month' '+%Y-%m-%d')')].{ID:SnapshotId}" --output text --region $REGION)
+    Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query "Snapshots[?(StartTime<='$(date --date='-1 month' '+%Y-%m-%d')')].{ID:SnapshotId}" --output text --region $REGION)
     #Snapshots="snap-0366f4adb11b16dd3"
     #Snapshots="snap-0ca1c5480c699e314"
 
