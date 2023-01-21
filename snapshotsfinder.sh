@@ -1,7 +1,10 @@
 #!/bin/sh
 
+
+
+find_policy(){
 #Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query "Snapshots[?(StartTime<='$(date --date='-2 month' '+%Y-%m-%d')')].{ID:SnapshotId}" --output text )
-Snapshots="snap-0366f4adb11b16dd3"
+#Snapshots="snap-0366f4adb11b16dd3"
 #Snapshots="snap-0ca1c5480c699e314"
 
 for i in $Snapshots
@@ -51,3 +54,25 @@ do
     echo "=========================================================================================================="
 
 done
+
+}
+
+
+while getopts 'sp:' OPTION; do
+  case "$OPTION" in
+    s)
+      s="$OPTARG"
+      echo "s = $s"
+      ;;
+    p)
+      p="$OPTARG"
+      echo "p = $p"
+      ;;
+
+    ?)
+      echo "script usage: $(basename \$0) [-l] [-h] [-a somevalue]" >&2
+      exit 1
+      ;;
+  esac
+done
+shift "$(($OPTIND -1))"
