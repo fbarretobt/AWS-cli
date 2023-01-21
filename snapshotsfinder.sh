@@ -1,7 +1,8 @@
 #!/bin/sh
 
-Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query "Snapshots[?(StartTime<='$(date --date='-2 month' '+%Y-%m-%d')')].{ID:SnapshotId}" --output text )
+#Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query "Snapshots[?(StartTime<='$(date --date='-2 month' '+%Y-%m-%d')')].{ID:SnapshotId}" --output text )
 #Snapshots="snap-0a92a41b03a8e33b7"
+Snapshots="snap-0ca1c5480c699e314"
 
 for i in $Snapshots
 do
@@ -25,7 +26,12 @@ do
     name=$(jq -r '.[] | .[] | .Tags[9].Value' <<< "$snapinfo")
 
 
-    policyinfo=$(aws dlm get-lifecycle-policy --policy-id $policy )
+    policyinfo=$(aws dlm get-lifecycle-policy --policy-id $policy)
+    run_code=$?
+
+    #echo $run_code
+    echo "Return Code : " $run_code
+
 
     policy_name=$(jq -r '.[] | .Description' <<< "$policyinfo")
 
