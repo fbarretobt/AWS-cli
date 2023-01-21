@@ -59,10 +59,7 @@ done
 
 
 check_flag(){
-    echo $s
-    echo $p 
-    echo $i
-    echo $r
+    echo ${OPTARG}
 }
 
 
@@ -79,17 +76,17 @@ help(){
 while getopts s:p:i:r:v: flag
 do
     case "${flag}" in
-        s) s=${OPTARG} 
-           check_flag $s
+        s) 
+           check_flag ${OPTARG}
         ;;
-        p) p=${OPTARG}
-           check_flag $p
+        p) 
+           check_flag ${OPTARG}
         ;;
-        i) i=${OPTARG}
-           check_flag $i 
+        i) 
+           check_flag ${OPTARG} 
         ;;
-        r) r=${OPTARG}
-           check_flag $r
+        r)
+           check_flag ${OPTARG}
         ;;
         v) 
            version
