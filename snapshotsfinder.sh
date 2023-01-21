@@ -1,8 +1,8 @@
 #!/bin/sh
 
 #Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query "Snapshots[?(StartTime<='$(date --date='-2 month' '+%Y-%m-%d')')].{ID:SnapshotId}" --output text )
-#Snapshots="snap-0a92a41b03a8e33b7"
-Snapshots="snap-0ca1c5480c699e314"
+Snapshots="snap-0366f4adb11b16dd3"
+#Snapshots="snap-0ca1c5480c699e314"
 
 for i in $Snapshots
 do
@@ -37,13 +37,10 @@ do
         echo "Encryption : " $encryption
         echo "Policy Name : " $policy_name
         echo "Snapshot Name : " $name
-
-        
-        continue
     else    
 
-        echo "Policy NoT found "
-        break
+        echo ""
+        
     fi
 
 
