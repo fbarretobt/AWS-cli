@@ -6,11 +6,11 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
     Snapshots=$(aws ec2 describe-snapshots --owner-id self  --query "Snapshots[?(StartTime<='$(date --date='-1 month' '+%Y-%m-%d')')].{ID:SnapshotId}" --output text --region $REGION)
     #Snapshots="snap-0366f4adb11b16dd3"
     #Snapshots="snap-0ca1c5480c699e314"
-
+    count = 0
     for i in $Snapshots
     do
 
-
+        $count = +1
         echo "=========================================================================================================="
         echo "||"                                                                                                  
         echo "||"                                                                                                   
@@ -68,4 +68,6 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
         echo "=========================================================================================================="
 
     done
+
+    echo "Total Snapshots older than 30 days = " $count
 done
