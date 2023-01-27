@@ -4,8 +4,8 @@ import sys
 from pprint import pprint
 from datetime import datetime, timezone
 
-
-regions_list = boto3.client.ec2.describe_regions()
+e = boto3.client('ec2')
+regions_list = e.describe_regions()
 
 #print(regions)
  
@@ -17,7 +17,7 @@ for region in regions:
 
     ec2 = boto3.client(ec2, regionA)
     resp = ec2.describe_instances()
-    resp_describe_snapshots = ec2.describe_snapshots(OwnerIds=['*******'])
+    resp_describe_snapshots = ec2.describe_snapshots(OwnerIds=['self'])
     snapshot =  resp_describe_snapshots['Snapshots']
     snapshots = [''];
     for snapshotIdList in resp_describe_snapshots['Snapshots']:
