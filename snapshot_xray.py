@@ -1,7 +1,10 @@
 import boto3
 
 
-response = snapshot.describe_attribute(
-    Attribute='productCodes'|'createVolumePermission',
-    DryRun=False
-)
+ec2 = boto3.client('ec2')
+
+regions = ec2.describe_regions()
+
+print( "Regionws = " + regions)
+
+
