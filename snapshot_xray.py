@@ -26,7 +26,7 @@ for region in regions:
     for snapshot in snapshot_response['Snapshots']:
         print("Snapshot Id : " + snapshot['SnapshotId'])
         print("Volume Id :" +snapshot['VolumeId'])
-        print("Volume Size :" + snapshot['VolumeSize'])
+        print("Volume Size :", snapshot['VolumeSize'])
         print("Creation date :" + snapshot['StartTime'])
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
         print("Snapshot is " + days_old + "days old")
