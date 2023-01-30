@@ -37,8 +37,9 @@ for region in regions:
             print("Creation date :", snapshot['StartTime'])
             print("Snapshot is ", days_old, "days old")
 
-
-
+            for tag in snapshot.tags: 
+                for tag in instance.tags:
+                    print(tag['Value'])
         else :
 
             continue
