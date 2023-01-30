@@ -40,7 +40,11 @@ for region in regions:
 
             try:
                 volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
-
+                volume = volume_response['Volumes'][0]
+                for attachment in volume['Attachments']:
+                    print("Instance ID :" + attachment['InstanceId'])
+                    print ("+")
+                    print ("+++++++++++++++++++++++++++")
             except botocore.exceptions.ClientError as error:
                 if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
                     print("Volume not found ", snapshot['VolumeId'] )
