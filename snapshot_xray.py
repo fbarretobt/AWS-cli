@@ -42,7 +42,7 @@ for region in regions:
                 print ("+")
                 print ("+++++++++++++++++++++++++++")
         except botocore.exceptions.ClientError as error:
-            if error.response['Error']['Code'] == 'NoSuchKey':
-                print('No such object')
+            if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
+                print("Volume not found ", volume['VolumeId'] )
             else: # Unknown exception
                 print(error.response)
