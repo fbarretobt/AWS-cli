@@ -34,18 +34,11 @@ for region in regions:
             print ("+++++++++++++++++++++++++++")
             print ("+")
             print("Snapshot Id : " + snapshot['SnapshotId'])
+            print("Name:", snapshot['Name'])
             print("Creation date :", snapshot['StartTime'])
             print("Snapshot is ", days_old, "days old")
 
-        try :
-
-            print(snapshot['Tags'])
-            
-        except botocore.exceptions.ClientError as error:
-                if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
-                    print("Volume not found ", volume['VolumeId'] )
-                else: # Unknown exception
-                    print(error.response)
+        
         else :
 
             continue
