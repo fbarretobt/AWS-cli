@@ -39,16 +39,11 @@ for region in regions:
             print("Snapshot is ", days_old, "days old")
 
             try:
-                volume_response = ec2.describe_volumes(VolumeIds=[volumeId])
-                volume = volume_response['Volumes'][0]
-                print("Volume Type :" +volume['VolumeType'])
-                for attachment in volume['Attachments']:
-                    print("Instance ID :" + attachment['InstanceId'])
-                    print ("+")
-                    print ("+++++++++++++++++++++++++++")
+                volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
+
             except botocore.exceptions.ClientError as error:
                 if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
-                    print("Volume not found ", volume['VolumeId'] )
+                    print("Volume not found ", snapshot['VolumeId'] )
                 else: # Unknown exception
                     print(error.response)
 
