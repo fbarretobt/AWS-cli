@@ -3,6 +3,7 @@ import json
 import sys
 from pprint import pprint
 from datetime import datetime, timezone
+import botocore
 
 e = boto3.client('ec2')
 regions_list = e.describe_regions()
@@ -24,15 +25,22 @@ for region in regions:
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
     for snapshot in snapshot_response['Snapshots']:
+        print ("+++++++++++++++++++++++++++")
+        print ("+")
         print("Snapshot Id : " + snapshot['SnapshotId'])
         print("Volume Id :" +snapshot['VolumeId'])
         print("Volume Size :", snapshot['VolumeSize'])
         print("Creation date :" + snapshot['StartTime'])
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
-        print("Snapshot is " + days_old + "days old")
-
-        volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
-        volume = volume_response['Volumes'][0]
-        print("Volume Type :" +volume['VolumeType'])
-        for attachment in volume['Attachments']:
-            print("Instance ID :" + attachment['InstanceId'])
+        print("Snapshot is ", days_old + "days old")
+        try:
+            volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
+            volume = volume_response['Volumes'][0]
+            print("Volume Type :" +volume['VolumeType'])
+            for attachment in volume['Attachments']:
+                print("Instance ID :" + attachment['InstanceId'])
+                print ("+")
+                print ("+++++++++++++++++++++++++++")
+        except ec2.meta.client.InvalidVolume.NotFound as err:
+            print("Volume does not exists :".format(err.response['Error']['InstanceId']))
+            raise err
