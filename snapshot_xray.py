@@ -30,9 +30,9 @@ for region in regions:
         print("Snapshot Id : " + snapshot['SnapshotId'])
         print("Volume Id :" +snapshot['VolumeId'])
         print("Volume Size :", snapshot['VolumeSize'])
-        print("Creation date :" + snapshot['StartTime'])
+        print("Creation date :", snapshot['StartTime'])
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
-        print("Snapshot is ", days_old + "days old")
+        print("Snapshot is ", days_old, "days old")
         try:
             volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
             volume = volume_response['Volumes'][0]
@@ -41,6 +41,8 @@ for region in regions:
                 print("Instance ID :" + attachment['InstanceId'])
                 print ("+")
                 print ("+++++++++++++++++++++++++++")
-        except ec2.meta.client.InvalidVolume.NotFound as err:
-            print("Volume does not exists :".format(err.response['Error']['InstanceId']))
-            raise err
+        except botocore.exceptions.ClientError as error:
+            if error.response['Error']['Code'] == 'NoSuchKey':
+                print('No such object')
+            else: # Unknown exception
+                print(error.response)
