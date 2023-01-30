@@ -24,15 +24,15 @@ for region in regions:
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
     for snapshot in snapshot_response['Snapshots']:
-        print(snapshot['SnapshotId'])
-        print(snapshot['VolumeId'])
-        print(snapshot['VolumeSize'])
-        print(snapshot['StartTime'])
+        print("Snapshot Id : " + snapshot['SnapshotId'])
+        print("Volume Id :" +snapshot['VolumeId'])
+        print("Volume Size :" + snapshot['VolumeSize'])
+        print("Creation date :" + snapshot['StartTime'])
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
-        print(days_old)
+        print("Snapshot is " + days_old + "days old")
 
         volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
         volume = volume_response['Volumes'][0]
-        print(volume['VolumeType'])
+        print("Volume Type :" +volume['VolumeType'])
         for attachment in volume['Attachments']:
-            print(attachment['InstanceId'])
+            print("Instance ID :" + attachment['InstanceId'])
