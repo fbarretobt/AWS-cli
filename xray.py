@@ -10,9 +10,9 @@ import botocore
 
 
 
-def print_ec2_tagname(instance_id, region):
+def print_ec2_tagname(instance_id, RegionName):
     ec2 = boto3.resource("ec2")
-    ec2instance = ec2.Instance(instance_id, region_name=region)
+    ec2instance = ec2.Instance(instance_id, region_name=RegionName)
     instancename = ''
     for tags in ec2instance.tags:
         if tags["Key"] == 'Name':
@@ -69,7 +69,7 @@ for region in regions:
             continue
 
 
-
+    Print("++++++++++++++++++++", region['RegionName'], "+++++++++++++++++++++++++++++++++")
 
     sorted_not_found_by_volume=sorted(not_found_volumes.items(), key=lambda x:x[1])
     convert_not_fount=dict(sorted_not_found_by_volume)
