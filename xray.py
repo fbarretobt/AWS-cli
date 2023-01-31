@@ -4,7 +4,21 @@ import json
 import sys
 from pprint import pprint
 from datetime import datetime, timezone
+import argparse
 import botocore
+
+
+
+
+def print_ec2_tagname(instance_id):
+    ec2 = boto3.resource("ec2", region_name="us-east-1")
+    ec2instance = ec2.Instance(instance_id)
+    instancename = ''
+    for tags in ec2instance.tags:
+        if tags["Key"] == 'Name':
+            instancename = tags["Value"]
+    #return instancename
+    print (instancename)
 
 
 
@@ -39,11 +53,8 @@ for snapshot in snapshot_response['Snapshots']:
                 #print ("+")
                 #print ("+++++++++++++++++++++++++++")
 
-                instance_response = ec2.describe_instances(InstanceIds=[attachment['InstanceId']])
-                for tags in instance_response.tags:
-                    if tags["Key"] == 'Name':
-                        instancename = tags["Value"]
-                        print(instancename)
+
+                print_ec2_tagname(attachment['InstanceId'])
                 #instances_attached.append(attachment['InstanceId'])
 
 
