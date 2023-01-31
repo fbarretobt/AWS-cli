@@ -59,7 +59,7 @@ for region in regions:
                     #print ("+++++++++++++++++++++++++++")
 
 
-                    instance_name=print_ec2_tagname(attachment['InstanceId'])
+                    instance_name=print_ec2_tagname(attachment['InstanceId'], region['RegionName'])
                     instances_attached.update({snapshot['SnapshotId']:instance_name})
 
                     #print("Name: ",instance_name)
@@ -102,7 +102,7 @@ for region in regions:
 
     print("||")
     print("||")
-    print ("Total of ", len(convert_not_fount), " Snapshots with non running instances")
+    print ("Total of ", len(convert_not_fount), " Snapshots with non running instances in", region['RegionName'])
     print("||")
     print("||")
     print("||")
@@ -116,4 +116,4 @@ for region in regions:
 
         print(key, ' = ',"Instance:", value)
 
-    print ("Total of ", len(convert_running), " Snapshots with  running instances")
+    print ("Total of ", len(convert_running), " Snapshots with  running instances in ", region['RegionName'])
