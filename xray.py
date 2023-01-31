@@ -30,16 +30,16 @@ for snapshot in snapshot_response['Snapshots']:
             for attachment in volume['Attachments']:
 
 
-                print ("+++++++++++++++++++++++++++")
-                print ("+")
-                print(snapshot['SnapshotId'])
-                print("Snapshot is ", days_old, "days old") 
-                print("Instance ID :" + attachment['InstanceId'])
-                print ("+")
-                print ("+")
-                print ("+++++++++++++++++++++++++++")
+                #print ("+++++++++++++++++++++++++++")
+                #print ("+")
+                #print(snapshot['SnapshotId'])
+                #print("Snapshot is ", days_old, "days old") 
+                #print("Instance ID :" + attachment['InstanceId'])
+                #print ("+")
+                #print ("+")
+                #print ("+++++++++++++++++++++++++++")
 
-                instances_attached.apped(attachment['InstanceId'])
+                instances_attached.append(attachment['InstanceId'])
 
 
         except botocore.exceptions.ClientError as error:
@@ -47,7 +47,7 @@ for snapshot in snapshot_response['Snapshots']:
             if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
 
                 #print("Volume not found ", snapshot['VolumeId'] )
-                not_found_volumes.append(snapshot['SnapshotId'])
+                not_found_volumes.append(snapshot['SnapshotId']:snapshot['VolumeId'])
 
             else: # Unknown exception
 
@@ -57,7 +57,12 @@ for snapshot in snapshot_response['Snapshots']:
 
         continue
 
-print("List of snaps whith volumes not found :", not_found_volumes)
-print(" ")
+#print("List of snaps whith volumes not found :", not_found_volumes)
+#print(" ")
 
-print("List of instances attached to snaps :" , instances_attached)
+#print("List of instances attached to snaps :" , instances_attached)
+
+
+for volume in not_found_volumes: 
+    print(not_found_volumes[0])
+
