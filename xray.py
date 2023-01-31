@@ -12,7 +12,7 @@ import botocore
 ec2 = boto3.client('ec2')
 snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
-not_found_volumes=[]
+not_found_volumes={}
 instances_attached=[]
 
 for snapshot in snapshot_response['Snapshots']:
@@ -47,7 +47,7 @@ for snapshot in snapshot_response['Snapshots']:
             if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
 
                 #print("Volume not found ", snapshot['VolumeId'] )
-                not_found_volumes.append(snapshot['SnapshotId']:snapshot['VolumeId'])
+                not_found_volumes.update(snapshot['SnapshotId']:snapshot['VolumeId'])
 
             else: # Unknown exception
 
