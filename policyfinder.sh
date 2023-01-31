@@ -5,7 +5,7 @@ for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[Regio
 do
 	echo $REGION
 
-	Snapshot=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[].SnapshotId' --filters Name=encrypted,Values=false --output text --region $REGION )
+	Snapshot=$(aws ec2 describe-snapshots --owner-id self  --query 'Snapshots[?(StartTime<='$(date --date='-1 month' '+%Y-%m-%d')')].SnapshotId'  --output text --region $REGION )
 
 	count="0"
 	for i in $Snapshot
