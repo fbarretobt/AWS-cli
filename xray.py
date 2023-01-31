@@ -98,9 +98,12 @@ print("||")
 print("||")
 print("===============================================================================")
 print("||  Snaps with  running instances:")  
-
+print("||")
+print("||")
 sorted_running=sorted(instances_attached.items(), key=lambda x:x[1])
 convert_running=dict(sorted_running)
 for key, value in convert_running.items():
 
     print(key, ' = ',"Instance:", value)
+
+print ("Total of ", len(convert_running), " Snapshots with  running instances")
