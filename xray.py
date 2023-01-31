@@ -63,6 +63,6 @@ for snapshot in snapshot_response['Snapshots']:
 #print("List of instances attached to snaps :" , instances_attached)
 
 
-for volume in not_found_volumes: 
-    print(not_found_volumes[0])
-
+for key, value in not_found_volumes.items():
+    print("Snaps with non running instances: ")
+    print("Snapshot:", key, ' = ',"Volume:", value)
