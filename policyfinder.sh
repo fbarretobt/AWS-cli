@@ -50,7 +50,7 @@ do
 
 	echo "Total Snapshots older than 30 days in $REGION = "$count 
 
-	$total=$(($total + $count))
+	total=$(($total + $count))
 
 done
 echo "++ "
