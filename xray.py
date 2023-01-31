@@ -39,7 +39,12 @@ for snapshot in snapshot_response['Snapshots']:
                 #print ("+")
                 #print ("+++++++++++++++++++++++++++")
 
-                instances_attached.append(attachment['InstanceId'])
+                instance_response = ec2.describe_instances(InstanceIds=[attachment['InstanceId']])
+                for tags in ec2instance.tags:
+                    if tags["Key"] == 'Name':
+                        instancename = tags["Value"]
+                        print(instancename)
+                #instances_attached.append(attachment['InstanceId'])
 
 
         except botocore.exceptions.ClientError as error:
@@ -65,9 +70,9 @@ for snapshot in snapshot_response['Snapshots']:
 
 sorted_not_found_by_volume=sorted(not_found_volumes.items(), key=lambda x:x[1])
 convert_not_fount=dict(sorted_not_found_by_volume)
-
+print("Snaps with non running instances: ")
 for key, value in convert_not_fount.items():
-    print("Snaps with non running instances: ")
+
     print("Snapshot:", key, ' = ',"Volume:", value)
 
 print ("Total of ", len(convert_not_fount), " Snapshots with non running instances")
