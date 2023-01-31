@@ -85,12 +85,7 @@ for region in regions:
 
     #print("List of instances attached to snaps :" , instances_attached)
 
-    print("+++++++++++++++++++++++++++")
-    print("Region = ", region['RegionName'])
-    print("+++++++++++++++++++++++++++")
-    print("+++++++++++++++++++++++++++")
-    print("||")
-    print("||")
+
     sorted_not_found_by_volume=sorted(not_found_volumes.items(), key=lambda x:x[1])
     convert_not_fount=dict(sorted_not_found_by_volume)
     print("||  Snaps with non running instances: ")
