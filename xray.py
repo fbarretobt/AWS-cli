@@ -47,7 +47,7 @@ for snapshot in snapshot_response['Snapshots']:
             if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
 
                 #print("Volume not found ", snapshot['VolumeId'] )
-                not_found_volumes.update(snapshot['SnapshotId']:snapshot['VolumeId'])
+                not_found_volumes.update({snapshot['SnapshotId']:snapshot['VolumeId']})
 
             else: # Unknown exception
 
