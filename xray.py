@@ -12,7 +12,7 @@ import botocore
 
 def print_ec2_tagname(instance_id, region):
     ec2 = boto3.resource("ec2")
-    ec2instance = ec2.Instance(instance_id, region)
+    ec2instance = ec2.Instance(instance_id, region_name=region)
     instancename = ''
     for tags in ec2instance.tags:
         if tags["Key"] == 'Name':
@@ -49,27 +49,15 @@ for region in regions:
                 for attachment in volume['Attachments']:
 
 
-                    #print ("+++++++++++++++++++++++++++")
-                    #print ("+")
-                    #print(snapshot['SnapshotId'])
-                    #print("Snapshot is ", days_old, "days old") 
-                    #print("Instance ID :" + attachment['InstanceId'])
-                    #print ("+")
-                    #print ("+")
-                    #print ("+++++++++++++++++++++++++++")
-
-
                     instance_name=print_ec2_tagname(attachment['InstanceId'], region['RegionName'])
                     instances_attached.update({snapshot['SnapshotId']:instance_name})
-
-                    #print("Name: ",instance_name)
 
 
             except botocore.exceptions.ClientError as error:
 
                 if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
 
-                    #print("Volume not found ", snapshot['VolumeId'] )
+
                     not_found_volumes.update({snapshot['SnapshotId']:snapshot['VolumeId']})
 
                 else: # Unknown exception
@@ -80,10 +68,7 @@ for region in regions:
 
             continue
 
-    #print("List of snaps whith volumes not found :", not_found_volumes)
-    #print(" ")
 
-    #print("List of instances attached to snaps :" , instances_attached)
 
 
     sorted_not_found_by_volume=sorted(not_found_volumes.items(), key=lambda x:x[1])
