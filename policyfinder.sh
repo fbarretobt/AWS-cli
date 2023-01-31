@@ -43,7 +43,7 @@ do
 				echo "State : " $state
 
 				echo "Total snaps = " $count
-		fi																																													1,9           Top            fi
+		fi																																	
 
 
 	done
