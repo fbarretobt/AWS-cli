@@ -24,7 +24,22 @@ for snapshot in snapshot_response['Snapshots']:
         volumeId=snapshot['VolumeId']
         #print(volumeId)
         print("Snapshot is ", days_old, "days old")
+        print ("+")
+        print ("+")
+        print ("+++++++++++++++++++++++++++")
 
+        try:
+            volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
+            volume = volume_response['Volumes'][0]
+            for attachment in volume['Attachments']:
+                print("Instance ID :" + attachment['InstanceId'])
+                print ("+")
+                print ("+++++++++++++++++++++++++++")
+        except botocore.exceptions.ClientError as error:
+            if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
+                print("Volume not found ", snapshot['VolumeId'] )
+            else: # Unknown exception
+                print(error.response)
     
     else :
 
