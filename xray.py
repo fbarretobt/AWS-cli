@@ -12,12 +12,12 @@ import botocore
 
 def print_ec2_tagname(instance_id, RegionName):
     ec2 = boto3.resource("ec2")
-    ec2instance = ec2.Instance(instance_id, region_name=RegionName)
+    ec2instance = ec2.Instance(instance_id, RegionName)
     instancename = ''
     for tags in ec2instance.tags:
         if tags["Key"] == 'Name':
             instancename = tags["Value"]
-    #return instancename
+    print(RegionName)
     return instancename
 
 
@@ -34,66 +34,71 @@ for region in regions:
     not_found_volumes={}
     instances_attached={}
 
-    for snapshot in snapshot_response['Snapshots']:
+    RegionName=region['RegionName']
+    print(RegionName)
+    if RegionName == "ap-southeast-2":
+        continue
+    else:
+        for snapshot in snapshot_response['Snapshots']:
 
-        days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
-
-
-        if days_old >= 29:
-
-            try:
-
-                volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
-                volume = volume_response['Volumes'][0]
-
-                for attachment in volume['Attachments']:
+            days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
 
 
-                    instance_name=print_ec2_tagname(attachment['InstanceId'], region['RegionName'])
-                    instances_attached.update({snapshot['SnapshotId']:instance_name})
+            if days_old >= 29:
+
+                try:
+
+                    volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
+                    volume = volume_response['Volumes'][0]
+
+                    for attachment in volume['Attachments']:
 
 
-            except botocore.exceptions.ClientError as error:
-
-                if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
-
-
-                    not_found_volumes.update({snapshot['SnapshotId']:snapshot['VolumeId']})
-
-                else: # Unknown exception
-
-                    print(error.response)
-        
-        else :
-
-            continue
+                        instance_name=print_ec2_tagname(attachment['InstanceId'], RegionName)
+                        instances_attached.update({snapshot['SnapshotId']:instance_name})
 
 
-    Print("++++++++++++++++++++", region['RegionName'], "+++++++++++++++++++++++++++++++++")
+                except botocore.exceptions.ClientError as error:
 
-    sorted_not_found_by_volume=sorted(not_found_volumes.items(), key=lambda x:x[1])
-    convert_not_fount=dict(sorted_not_found_by_volume)
-    print("||  Snaps with non running instances: ")
-    print("||")
-    print("||")
-    for key, value in convert_not_fount.items():
+                    if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
 
-        print("Snapshot:", key, ' = ',"Volume:", value)
 
-    print("||")
-    print("||")
-    print ("Total of ", len(convert_not_fount), " Snapshots with non running instances in", region['RegionName'])
-    print("||")
-    print("||")
-    print("||")
-    print("===============================================================================")
-    print("||  Snaps with  running instances:")  
-    print("||")
-    print("||")
-    sorted_running=sorted(instances_attached.items(), key=lambda x:x[1])
-    convert_running=dict(sorted_running)
-    for key, value in convert_running.items():
+                        not_found_volumes.update({snapshot['SnapshotId']:snapshot['VolumeId']})
 
-        print(key, ' = ',"Instance:", value)
+                    else: # Unknown exception
 
-    print ("Total of ", len(convert_running), " Snapshots with  running instances in ", region['RegionName'])
+                        print(error.response)
+            
+            else :
+
+                continue
+
+
+        print("++++++++++++++++++++", region['RegionName'], "+++++++++++++++++++++++++++++++++")
+
+        sorted_not_found_by_volume=sorted(not_found_volumes.items(), key=lambda x:x[1])
+        convert_not_fount=dict(sorted_not_found_by_volume)
+        print("||  Snaps with non running instances: ")
+        print("||")
+        print("||")
+        for key, value in convert_not_fount.items():
+
+            print("Snapshot:", key, ' = ',"Volume:", value)
+
+        print("||")
+        print("||")
+        print ("Total of ", len(convert_not_fount), " Snapshots with non running instances in", region['RegionName'])
+        print("||")
+        print("||")
+        print("||")
+        print("===============================================================================")
+        print("||  Snaps with  running instances:")  
+        print("||")
+        print("||")
+        sorted_running=sorted(instances_attached.items(), key=lambda x:x[1])
+        convert_running=dict(sorted_running)
+        for key, value in convert_running.items():
+
+            print(key, ' = ',"Instance:", value)
+
+        print ("Total of ", len(convert_running), " Snapshots with  running instances in ", region['RegionName'])
