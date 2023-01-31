@@ -20,19 +20,17 @@ for snapshot in snapshot_response['Snapshots']:
 
 
     if days_old >= 29:
-        print ("+++++++++++++++++++++++++++")
-        print ("+")
-        print(snapshot['SnapshotId'])
-        volumeId=snapshot['VolumeId']
-        #print(volumeId)
-        print("Snapshot is ", days_old, "days old")
 
         try:
+
             volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
             volume = volume_response['Volumes'][0]
 
             for attachment in volume['Attachments']:
-
+                print ("+++++++++++++++++++++++++++")
+                print ("+")
+                print(snapshot['SnapshotId'])
+                print("Snapshot is ", days_old, "days old") 
                 print("Instance ID :" + attachment['InstanceId'])
                 print ("+")
                 print ("+")
@@ -43,8 +41,8 @@ for snapshot in snapshot_response['Snapshots']:
 
             if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
 
-                print("Volume not found ", snapshot['VolumeId'] )
-                not_found_volumes.append("snapshot['VolumeId']")
+                #print("Volume not found ", snapshot['VolumeId'] )
+                not_found_volumes.append(snapshot['SnapshotId'])
 
             else: # Unknown exception
 
