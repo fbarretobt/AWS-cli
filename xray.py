@@ -40,7 +40,7 @@ for snapshot in snapshot_response['Snapshots']:
                 #print ("+++++++++++++++++++++++++++")
 
                 instance_response = ec2.describe_instances(InstanceIds=[attachment['InstanceId']])
-                for tags in ec2instance.tags:
+                for tags in instance_response.tags:
                     if tags["Key"] == 'Name':
                         instancename = tags["Value"]
                         print(instancename)
