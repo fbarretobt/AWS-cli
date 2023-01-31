@@ -13,6 +13,7 @@ ec2 = boto3.client('ec2')
 snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
 not_found_volumes=[]
+instances_attached=[]
 
 for snapshot in snapshot_response['Snapshots']:
 
@@ -27,6 +28,8 @@ for snapshot in snapshot_response['Snapshots']:
             volume = volume_response['Volumes'][0]
 
             for attachment in volume['Attachments']:
+
+
                 print ("+++++++++++++++++++++++++++")
                 print ("+")
                 print(snapshot['SnapshotId'])
@@ -35,6 +38,8 @@ for snapshot in snapshot_response['Snapshots']:
                 print ("+")
                 print ("+")
                 print ("+++++++++++++++++++++++++++")
+
+                instances_attached.apped(attachment['InstanceId'])
 
 
         except botocore.exceptions.ClientError as error:
@@ -53,3 +58,6 @@ for snapshot in snapshot_response['Snapshots']:
         continue
 
 print("List of snaps whith volumes not found :", not_found_volumes)
+print(" ")
+
+print("List of instances attached to snaps :" , instances_attached)
