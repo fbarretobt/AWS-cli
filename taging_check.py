@@ -21,21 +21,36 @@ def ec2_tagname(instance_id):
 
 
 
+def no_DR_tag(snapshotid):
+    print("Snapshot ", snapshotid, "Has no DR tag")
+    for tag_values in tags.values():
+        print("**********   ",tag_values)    
+    return
+
+
+def DR_tag(snapshotid):
+    print("Snapshot ",snapshotid, "Has DR-Tier Tag")
+    return
+
+
+def no_tag(snapshotid):
+    print("Snapshot ", snapshotid, "Has no Tags")
+
+
 def snapshot_tag_info(snapshotid):
     ec2 = boto3.resource('ec2')
     snapshot = ec2.Snapshot(snapshotid)
 
     for tags in snapshot.tags:
         if tags["Key"] == 'DR-Tier':
-            print("Snapshot ",snapshot, "Has DR-Tier Tag")
+            DR_tag(snapshotid)
             continue
-        elif not snapshot.tags:
-            print("Snapshot ", snapshotid, "Has no Tags")
+        elif len(snapshot.tags) == 0:
+            no_tag(snapshot)
         else : 
-            print("Snapshot ", snapshotid, "Has no DR tag")
-            for tag_values in tags.values():
-                print("**********   ",tag_values)
+            no_DR_tag(snapshot)
             continue
+    return
 
 
 def list_old_snapshots():
@@ -55,7 +70,11 @@ def list_old_snapshots():
             continue
         else :
             continue
+    return
     
 
-list_old_snapshots()
+#list_old_snapshots()
 
+
+if __name__ == '__main__':
+    globals()[sys.argv[1]]()
