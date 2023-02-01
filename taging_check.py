@@ -22,7 +22,7 @@ def ec2_tagname(instance_id):
         if tags["Key"] == 'Name':
             
             instancename = tags["Value"]
-            
+
     #return instancename
     return instancename
 
@@ -94,8 +94,8 @@ def list_old_snapshots():
     return
     
 
-#list_old_snapshots()
-
 ##################################################################################
-#if __name__ == '__main__':
+if __name__ == '__main__':
 #    globals()[sys.argv[1]](sys.argv[2])
+
+    list_old_snapshots()
