@@ -69,17 +69,17 @@ def snapshot_tag_info(snapshotid):
     snapshot = ec2.Snapshot(snapshotid)
 
     if snapshot.tags is not None:
-        for tags in snapshot.tags:
+      
+        if 'DR-Tier' in snapshot.tags.values():
+            DR_tag(snapshotid)
             
-            if tags["Key"] == 'DR-Tier':
-                DR_tag(snapshotid)
-                continue
-            else : 
-                print("#")
-                no_DR_tag(snapshotid, tags)
-                print("#")
-                print("#")
-                continue
+        else : 
+            print("# " , snapshotid, " has no DR-tier Tag")
+            no_DR_tag(snapshotid, tags)
+            print("#")
+            print("#")
+            
+
     else :
         no_tag(snapshotid)
 
