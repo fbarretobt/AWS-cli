@@ -32,8 +32,6 @@ def ec2_tagname(instance_id):
 ### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags):
 
-    print("Snapshot ", snapshotid, "Has no DR tag")
-
     for tag_values in tags.values():
 
         print("**********   ",tag_values)   
@@ -71,7 +69,12 @@ def snapshot_tag_info(snapshotid):
                 DR_tag(snapshotid)
                 continue
             else : 
-                no_DR_tag(snapshot, tags)
+                print("#")
+                print("Snapshot ", snapshotid, "Has no DR tag")
+                print("## Tag List :")
+                no_DR_tag(snapshotid, tags)
+                print("#")
+                print("#")
                 continue
     else :
         no_tag(snapshotid)
