@@ -112,4 +112,4 @@ def list_old_snapshots(snapshotid):
 if __name__ == '__main__':
 #    globals()[sys.argv[1]](sys.argv[2])
 
-    list_old_snapshots()[sys.argv[1]]
+    list_old_snapshots([sys.argv[1]])
