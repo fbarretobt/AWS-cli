@@ -46,7 +46,7 @@ def no_DR_tag(snapshotid, tags):
 ### If it has the DR tag
 def DR_tag(snapshotid):
 
-    print("Snapshot ",snapshotid, "Has DR-Tier Tag")
+    #print("Snapshot ",snapshotid, "Has DR-Tier Tag")
 
     return
 
