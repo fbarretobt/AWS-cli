@@ -85,24 +85,22 @@ def snapshot_tag_info(snapshotid):
 ### This funsction lists all snapshots older than 29 days 
 def list_old_snapshots(snapshotid):
 
-    if snapshot is not None:
-        ec2 = boto3.client('ec2')
-        snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
-        for snapshot in snapshot_response['Snapshots']:
+    ec2 = boto3.client('ec2')
+    snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
-            days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
+    for snapshot in snapshot_response['Snapshots']:
+
+        days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
 
 
-            if days_old >= 29:
-                
-                print(snapshot['SnapshotId'], "is ", days_old, "days old")
-                snapshot_tag_info(snapshot['SnapshotId'])
-                continue
-            else :
-                continue
-    else :
-        snapshot_tag_info(snapshotid)
+        if days_old >= 29:
+            
+            print(snapshot['SnapshotId'], "is ", days_old, "days old")
+            snapshot_tag_info(snapshot['SnapshotId'])
+            continue
+        else :
+            continue
 
     return
     
@@ -112,4 +110,4 @@ def list_old_snapshots(snapshotid):
 if __name__ == '__main__':
 #    globals()[sys.argv[1]](sys.argv[2])
 
-    list_old_snapshots([sys.argv[1]])
+    list_old_snapshots()
