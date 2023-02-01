@@ -28,9 +28,12 @@ def snapshot_tag_info(snapshotid):
     for tags in snapshot.tags:
         if tags["Key"] == 'DR-Tier':
             print("Snapshot ",snapshot, "Has DR-Tier Tag")
+            continue
         else : 
-            print("Snapshot ", snapshot, "Has no DR tag")
-            print(tags)
+            print("Snapshot ", snapshotid, "Has no DR tag")
+            for tag in tags:
+                print(tag['Value'])
+            continue
 
 
 def list_old_snapshots():
@@ -47,8 +50,10 @@ def list_old_snapshots():
             
             print(snapshot['SnapshotId'], "is ", days_old, "days old")
             snapshot_tag_info(snapshot['SnapshotId'])
+            continue
         else :
             continue
     
 
-list_old_snapshots()
+#list_old_snapshots()
+
