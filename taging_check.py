@@ -8,34 +8,19 @@ import botocore
 
 
 
-##################################################################################
-### get instance name
-def ec2_tagname(instance_id):
-
-    ec2 = boto3.resource("ec2")
-
-    ec2instance = ec2.Instance(instance_id)
-
-    instancename = ''
-
-    for tags in ec2instance.tags:
-
-        if tags["Key"] == 'Name':
-            
-            instancename = tags["Value"]
-
-    #return instancename
-    return instancename
-
-
-
+DR_tagged_list=[]
+DR_not_tagged_list=[]
+not_tagged_list=[]
 
 ##################################################################################
 ### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags):
 
-    for tag in tags:
-        print(list(tag.values()))
+    #for tag in tags:
+    #    print(list(tag.values()))
+
+    not_tagged_list.append(snapshotid)
+
     return
 
 
@@ -44,7 +29,8 @@ def no_DR_tag(snapshotid, tags):
 ### If it has the DR tag
 def DR_tag(snapshotid):
 
-    #print("Snapshot ",snapshotid, "Has DR-Tier Tag")
+    DR_tagged_list.append(snapshotid)
+
 
     return
 
@@ -55,7 +41,7 @@ def DR_tag(snapshotid):
 ## what to do if it has no tag 
 def no_tag(snapshotid):
 
-    print("Snapshot ", snapshotid, "Has no Tags")
+    not_tagged_list.append(snapshotid)
 
 
 
@@ -70,10 +56,10 @@ def snapshot_tag_info(snapshotid):
       
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
  
-            print("Has the DR-Tier Tag")
+            DR_tag(snapshotid)
         else:
 
-            print("Tag List")
+            #print("Tag List")
             no_DR_tag(snapshotid, snapshot.tags)
 
     else :
@@ -96,9 +82,9 @@ def list_old_snapshots():
 
 
         if days_old >= 29:
-            
-            print(snapshot['SnapshotId'], "is ", days_old, "days old")
+
             snapshot_tag_info(snapshot['SnapshotId'])
+
             continue
         else :
             continue
@@ -110,3 +96,18 @@ def list_old_snapshots():
 ### initiates the function calls 
 if __name__ == '__main__':
     list_old_snapshots()
+
+
+
+    print("snapshots with DR tag: ")
+    print(DR_tagged_list)
+    print("#")
+    print("#")
+    print("#")
+    print("snapshots with no DR tag: ")
+    print(DR_not_tagged_list)
+    print("#")
+    print("#")
+    print("#")
+    print("snapshots with no tag: ")
+    print(not_tagged_list)
