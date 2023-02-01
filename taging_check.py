@@ -28,7 +28,7 @@ def ec2_tagname(instance_id):
 
 
 ##################################################################################
-def no_DR_tag(snapshotid):
+def no_DR_tag(snapshotid, tags):
 
     print("Snapshot ", snapshotid, "Has no DR tag")
 
@@ -66,7 +66,7 @@ def snapshot_tag_info(snapshotid):
                 DR_tag(snapshotid)
                 continue
             else : 
-                no_DR_tag(snapshot)
+                no_DR_tag(snapshot, tags)
                 continue
     else :
         no_tag(snapshotid)
