@@ -28,6 +28,8 @@ def ec2_tagname(instance_id):
     return instancename
 
 
+
+
 ##################################################################################
 ### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags):
@@ -48,11 +50,15 @@ def DR_tag(snapshotid):
 
     return
 
+
+
+
 ##################################################################################
 ## what to do if it has no tag 
 def no_tag(snapshotid):
 
     print("Snapshot ", snapshotid, "Has no Tags")
+
 
 
 
@@ -81,10 +87,11 @@ def snapshot_tag_info(snapshotid):
 
     return
 
+
+
 ##################################################################################
 ### This funsction lists all snapshots older than 29 days 
 def list_old_snapshots():
-
 
     ec2 = boto3.client('ec2')
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
@@ -108,6 +115,4 @@ def list_old_snapshots():
 ##################################################################################
 ### initiates the function calls 
 if __name__ == '__main__':
-#    globals()[sys.argv[1]](sys.argv[2])
-
     list_old_snapshots()
