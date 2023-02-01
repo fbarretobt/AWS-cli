@@ -19,7 +19,7 @@ def no_DR_tag(snapshotid, tags):
     #for tag in tags:
     #    print(list(tag.values()))
 
-    not_tagged_list.append(snapshotid)
+    DR_not_tagged_list.append(snapshotid)
 
     return
 
