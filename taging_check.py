@@ -46,6 +46,7 @@ def list_old_snapshots():
         if days_old >= 29:
             
             print(snapshot['SnapshotId'], "is ", days_old, "days old")
+            snapshot_tag_info(snapshot['SnapshotId'])
         else :
             continue
     
