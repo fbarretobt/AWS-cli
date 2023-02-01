@@ -9,6 +9,7 @@ import botocore
 
 
 ##################################################################################
+### get instance name
 def ec2_tagname(instance_id):
 
     ec2 = boto3.resource("ec2")
@@ -28,6 +29,7 @@ def ec2_tagname(instance_id):
 
 
 ##################################################################################
+### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags):
 
     print("Snapshot ", snapshotid, "Has no DR tag")
@@ -41,6 +43,7 @@ def no_DR_tag(snapshotid, tags):
 
 
 ##################################################################################
+### If it has the DR tag
 def DR_tag(snapshotid):
 
     print("Snapshot ",snapshotid, "Has DR-Tier Tag")
@@ -48,6 +51,7 @@ def DR_tag(snapshotid):
     return
 
 ##################################################################################
+## what to do if it has no tag 
 def no_tag(snapshotid):
 
     print("Snapshot ", snapshotid, "Has no Tags")
@@ -55,6 +59,7 @@ def no_tag(snapshotid):
 
 
 ##################################################################################
+### Here we check for the tagging information if it has tags or not or a specific tag 
 def snapshot_tag_info(snapshotid):
     ec2 = boto3.resource('ec2')
     snapshot = ec2.Snapshot(snapshotid)
@@ -74,6 +79,7 @@ def snapshot_tag_info(snapshotid):
     return
 
 ##################################################################################
+### This funsction lists all snapshots older than 29 days 
 def list_old_snapshots():
 
     ec2 = boto3.client('ec2')
@@ -95,6 +101,7 @@ def list_old_snapshots():
     
 
 ##################################################################################
+### initiates the function calls 
 if __name__ == '__main__':
 #    globals()[sys.argv[1]](sys.argv[2])
 
