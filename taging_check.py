@@ -76,8 +76,6 @@ def snapshot_tag_info(snapshotid):
                 continue
             else : 
                 print("#")
-                print("Snapshot ", snapshotid, "Has no DR tag")
-                print("## Tag List :")
                 no_DR_tag(snapshotid, tags)
                 print("#")
                 print("#")
