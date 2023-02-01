@@ -49,3 +49,5 @@ def list_old_snapshots():
         else :
             continue
     
+
+list_old_snapshots()
