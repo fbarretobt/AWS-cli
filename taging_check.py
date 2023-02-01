@@ -70,13 +70,13 @@ def snapshot_tag_info(snapshotid):
 
     if snapshot.tags is not None:
       
-        if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', tags), None):
+        if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
  
             print("Has the DR-Tier Tag")
         else:
 
             print("Tag List")
-            DR_tag(snapshotid)
+            no_DR_tag(snapshotid, snapshot.tags)
 
     else :
         no_tag(snapshotid)
