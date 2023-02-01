@@ -83,7 +83,7 @@ def snapshot_tag_info(snapshotid):
 
 ##################################################################################
 ### This funsction lists all snapshots older than 29 days 
-def list_old_snapshots(snapshotid):
+def list_old_snapshots():
 
 
     ec2 = boto3.client('ec2')
