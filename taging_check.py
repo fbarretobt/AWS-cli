@@ -41,15 +41,18 @@ def snapshot_tag_info(snapshotid):
     ec2 = boto3.resource('ec2')
     snapshot = ec2.Snapshot(snapshotid)
 
-    for tags in snapshot.tags:
-        if tags["Key"] == 'DR-Tier':
-            DR_tag(snapshotid)
-            continue
-        elif len(snapshot.tags) == 0:
-            no_tag(snapshot)
-        else : 
-            no_DR_tag(snapshot)
-            continue
+    if snapshot.tags is not None:
+        for tags in snapshot.tags:
+            
+            if tags["Key"] == 'DR-Tier':
+                DR_tag(snapshotid)
+                continue
+            else : 
+                no_DR_tag(snapshot)
+                continue
+    else :
+        no_tag(snapshotid)
+        
     return
 
 
