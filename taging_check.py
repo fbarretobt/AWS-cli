@@ -8,35 +8,53 @@ import botocore
 
 
 
-
+##################################################################################
 def ec2_tagname(instance_id):
+
     ec2 = boto3.resource("ec2")
+
     ec2instance = ec2.Instance(instance_id)
+
     instancename = ''
+
     for tags in ec2instance.tags:
+
         if tags["Key"] == 'Name':
+            
             instancename = tags["Value"]
+            
     #return instancename
     return instancename
 
 
-
+##################################################################################
 def no_DR_tag(snapshotid):
+
     print("Snapshot ", snapshotid, "Has no DR tag")
+
     for tag_values in tags.values():
-        print("**********   ",tag_values)    
+
+        print("**********   ",tag_values)   
+
     return
 
 
+
+##################################################################################
 def DR_tag(snapshotid):
+
     print("Snapshot ",snapshotid, "Has DR-Tier Tag")
+
     return
 
-
+##################################################################################
 def no_tag(snapshotid):
+
     print("Snapshot ", snapshotid, "Has no Tags")
 
 
+
+##################################################################################
 def snapshot_tag_info(snapshotid):
     ec2 = boto3.resource('ec2')
     snapshot = ec2.Snapshot(snapshotid)
@@ -52,10 +70,10 @@ def snapshot_tag_info(snapshotid):
                 continue
     else :
         no_tag(snapshotid)
-        
+
     return
 
-
+##################################################################################
 def list_old_snapshots():
 
     ec2 = boto3.client('ec2')
@@ -78,6 +96,6 @@ def list_old_snapshots():
 
 #list_old_snapshots()
 
-
-if __name__ == '__main__':
-    globals()[sys.argv[1]](sys.argv[2])
+##################################################################################
+#if __name__ == '__main__':
+#    globals()[sys.argv[1]](sys.argv[2])
