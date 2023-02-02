@@ -143,12 +143,12 @@ if __name__ == '__main__':
     
 
     with open("DR_tagged_list.json","w") as file:
-        json.dump(DR_tagged_list,file)
+        json.dump(DR_tagged_list,file, indent=4, default=str)
 
     with open("DR_not_tagged_list.json","w") as file:
-        json.dump(DR_not_tagged_list,file)
+        json.dump(DR_not_tagged_list,file, indent=4, default=str)
 
     with open("not_tagged_list.json","w") as file:
-        json.dump(not_tagged_list,file)
+        json.dump(not_tagged_list,file, indent=4, default=str)
 
 
