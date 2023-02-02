@@ -27,7 +27,7 @@ def print_ec2_tagname(instance_id, region):
 
 ##################################################################################
 ### If it does not have the DR tag
-def no_DR_tag(snapshotid, tags, region, instance_name):
+def no_DR_tag(snapshotid, tags, region):
     
     DR_not_tagged_list[region].update({snapshotid:"NO DR Tag"})
 
@@ -49,7 +49,7 @@ def DR_tag(snapshotid, region):
 
 ##################################################################################
 ## what to do if it has no tag 
-def no_tag(snapshotid, region, instance_name):
+def no_tag(snapshotid, region):
 
     not_tagged_list[region].update({snapshotid:"NO TAGS"})
     
@@ -71,16 +71,16 @@ def snapshot_tag_info(snapshotid, region):
 
 
             DR_tag(snapshotid, region)
-            print(snapshotid)
+            print(region,snapshotid, "DR-tier Tagged")
             
         else:
 
             no_DR_tag(snapshotid, snapshot.tags , region)
-            print(snapshotid)
+            print(region,snapshotid, "not DR-tier tag")
 
     else :
         no_tag(snapshotid, region)
-        print(snapshotid )
+        print(region, snapshotid, "No Tags" )
 
 
     return
