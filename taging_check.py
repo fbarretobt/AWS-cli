@@ -29,7 +29,7 @@ def print_ec2_tagname(instance_id, region):
 ### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags, region, instance_name):
     
-    DR_not_tagged_list[region].update({snapshotid:instance_name})
+    DR_not_tagged_list[region].update({snapshotid:"NO DR Tag"})
 
     return DR_not_tagged_list
 
@@ -37,7 +37,7 @@ def no_DR_tag(snapshotid, tags, region, instance_name):
 
 ##################################################################################
 ### If it has the DR tag
-def DR_tag(snapshotid, region, instance_name):
+def DR_tag(snapshotid, region):
 
     
     DR_tagged_list[region].update({snapshotid:"DR-Tier"})
@@ -60,7 +60,7 @@ def no_tag(snapshotid, region, instance_name):
 
 ##################################################################################
 ### Here we check for the tagging information if it has tags or not or a specific tag 
-def snapshot_tag_info(snapshotid, region, instance_name):
+def snapshot_tag_info(snapshotid, region):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
     
@@ -68,19 +68,19 @@ def snapshot_tag_info(snapshotid, region, instance_name):
     if snapshot.tags is not None:
       
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
- 
-            DR_tag(snapshotid, region, instance_name)
-            print(snapshotid, instance_name)
+
+
+            DR_tag(snapshotid, region)
+            print(snapshotid)
             
         else:
 
-           
-            no_DR_tag(snapshotid, snapshot.tags , region, instance_name)
-            print(snapshotid, instance_name)
+            no_DR_tag(snapshotid, snapshot.tags , region)
+            print(snapshotid)
 
     else :
-        no_tag(snapshotid, region, instance_name)
-        print(snapshotid, instance_name)
+        no_tag(snapshotid, region)
+        print(snapshotid )
 
 
     return
@@ -101,31 +101,13 @@ def list_old_snapshots(region):
 
 
         if days_old >= 29:
-            try:
 
-                volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
-                volume = volume_response['Volumes'][0]
-
-                for attachment in volume['Attachments']:
-
-
-                    instance_name=print_ec2_tagname(attachment['InstanceId'], region)
-                    print(snapshotid, instance_name)
-
-            except botocore.exceptions.ClientError as error:
-
-                if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
-
-                    continue
-
-                else: # Unknown exception
-
-                    print(error.response)
-            
-            snapshot_tag_info(snapshot['SnapshotId'], region, instance_name)
+            snapshot_tag_info(snapshot['SnapshotId'], region)
 
             continue
+
         else :
+
             continue
 
     return
