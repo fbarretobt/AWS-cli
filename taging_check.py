@@ -29,7 +29,20 @@ def print_ec2_tagname(instance_id, region):
 ### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags, region):
     
-    DR_not_tagged_list[region].update({snapshotid:"NO DR Tag"})
+    print(tags)
+
+    try :
+        instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', tags), None)
+        instance = instance_info["Value"]
+    except:
+        instance = "No Instance ID Tag"
+    try :
+        name_info=next(filter(lambda obj: obj.get('Key') == 'Name', tags), None)
+        name=name_info["Value"]
+    except:
+        name ="No Name Tag"
+
+    DR_not_tagged_list[region].update({snapshotid:"NO DR Tag", "Instance":instance, "Name":name})
 
     return DR_not_tagged_list
 
@@ -37,10 +50,19 @@ def no_DR_tag(snapshotid, tags, region):
 
 ##################################################################################
 ### If it has the DR tag
-def DR_tag(snapshotid, region):
+def DR_tag(snapshotid,tags, region):
 
-    
-    DR_tagged_list[region].update({snapshotid:"DR-Tier"})
+    try :
+        instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', tags), None)
+        instance = instance_info["Value"]
+    except:
+        instance = "No Instance ID Tag"
+    try :
+        name_info=next(filter(lambda obj: obj.get('Key') == 'Name', tags), None)
+        name=name_info["Value"]
+    except:
+        name ="No Name Tag"
+    DR_tagged_list[region].update({snapshotid:"DR-Tier", "Instance":instance, "Name":name})
 
     return DR_tagged_list
 
@@ -70,7 +92,7 @@ def snapshot_tag_info(snapshotid, region):
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
 
 
-            DR_tag(snapshotid, region)
+            DR_tag(snapshotid, snapshot.tags, region)
             #print(region,snapshotid, "DR-tier Tagged")
             
         else:
