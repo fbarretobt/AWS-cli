@@ -154,7 +154,7 @@ def region(region):
         count=0 
         for region in regions:
             count +=1 
-            print("Working on ", count, "of ", region_count, "in ")
+            print("Working on region", count, "of ", region_count)
             DR_tagged_list[region['RegionName']]={}
             DR_not_tagged_list[region['RegionName']]={}
             not_tagged_list[region['RegionName']]={}
