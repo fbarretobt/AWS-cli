@@ -16,9 +16,9 @@ not_tagged_list={}
 ### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags, region):
     
-    not_tagged_list[region].update({"Snap":snapshotid})
+    DR_not_tagged_list[region].update({"Snap":snapshotid})
 
-    return
+    return DR_not_tagged_list
 
 
 
@@ -29,7 +29,7 @@ def DR_tag(snapshotid, region):
     
     DR_tagged_list[region].update({"Snap":snapshotid})
 
-    return
+    return DR_tagged_list
 
 
 
@@ -39,6 +39,7 @@ def DR_tag(snapshotid, region):
 def no_tag(snapshotid, region):
     
     not_tagged_list[region].update({"Snap":snapshotid})
+    return not_tagged_list
 
 
 
@@ -55,13 +56,15 @@ def snapshot_tag_info(snapshotid, region):
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
  
             DR_tag(snapshotid, region)
+            print(DR_not_tagged_list, not_tagged_list, DR_not_tagged_list)
         else:
 
            
             no_DR_tag(snapshotid, snapshot.tags , region)
-
+            print(DR_not_tagged_list, not_tagged_list, DR_not_tagged_list)
     else :
         no_tag(snapshotid, region)
+        print(DR_not_tagged_list, not_tagged_list, DR_not_tagged_list)
 
     return
 
@@ -71,9 +74,6 @@ def snapshot_tag_info(snapshotid, region):
 ### This funsction lists all snapshots older than 29 days 
 def list_old_snapshots(region):
 
-    print(DR_not_tagged_list)
-    print(DR_not_tagged_list)
-    print(not_tagged_list)
 
     ec2 = boto3.client('ec2', region)
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
@@ -113,7 +113,7 @@ def region(region):
         DR_tagged_list[region]={}
         DR_not_tagged_list[region]={}
         not_tagged_list[region]={}    
-            
+
         list_old_snapshots(region)
 
 ##################################################################################
