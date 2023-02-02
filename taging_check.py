@@ -97,8 +97,9 @@ def list_old_snapshots(region):
 def region(region):
 
     if region == "all":
-        regions = boto.ec2.regions()
-        for region in regions['Regions']:
+        ec2 = boto3.client('ec2')
+        regions = ec2.describe_regions()
+        for region in regions['RegionName']:
             list_old_snapshots(region)
     else:
         list_old_snapshots(region)
@@ -106,24 +107,21 @@ def region(region):
 ##################################################################################
 ### initiates the function calls 
 if __name__ == '__main__':
-    try:
-        region(*sys.argv[1:])
-        
 
-        print("snapshots with DR tag: ")
-        print(DR_tagged_list)
-        print("#")
-        print("#")
-        print("#")
-        print("snapshots with no DR tag: ")
-        print(DR_not_tagged_list)
-        print("#")
-        print("#")
-        print("#")
-        print("snapshots with no tag: ")
-        print(not_tagged_list)
+    globals()[sys.argv[1]](sys.argv[2])
+    
 
-    except :
-        print(error)
+    print("snapshots with DR tag: ")
+    print(DR_tagged_list)
+    print("#")
+    print("#")
+    print("#")
+    print("snapshots with no DR tag: ")
+    print(DR_not_tagged_list)
+    print("#")
+    print("#")
+    print("#")
+    print("snapshots with no tag: ")
+    print(not_tagged_list)
 
 
