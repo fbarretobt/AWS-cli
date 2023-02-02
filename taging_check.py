@@ -18,8 +18,8 @@ def no_DR_tag(snapshotid, tags, region):
 
     #for tag in tags:
     #    print(list(tag.values()))
-
-    not_tagged_list[region].update(snapshotid)
+    print("nO dr ", region)
+    not_tagged_list[region].update({"Snap":snapshotid})
 
     return
 
@@ -29,8 +29,8 @@ def no_DR_tag(snapshotid, tags, region):
 ### If it has the DR tag
 def DR_tag(snapshotid, region):
 
-     
-    DR_tagged_list[region].update(snapshotid)
+    print("DR ", region)
+    DR_tagged_list[region].update({"Snap":snapshotid})
 
     return
 
@@ -40,8 +40,8 @@ def DR_tag(snapshotid, region):
 ##################################################################################
 ## what to do if it has no tag 
 def no_tag(snapshotid, region):
-
-    not_tagged_list[region].update(snapshotid)
+    print("No Tag", region)
+    not_tagged_list[region].update({"Snap":snapshotid})
 
 
 
@@ -51,6 +51,7 @@ def no_tag(snapshotid, region):
 def snapshot_tag_info(snapshotid, region):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
+    print("Tag info ", region)
 
     if snapshot.tags is not None:
       
@@ -82,7 +83,7 @@ def list_old_snapshots(region):
 
 
         if days_old >= 29:
-
+            print("List OLd on", region)
             snapshot_tag_info(snapshot['SnapshotId'], region)
 
             continue
