@@ -97,10 +97,11 @@ def list_old_snapshots(region):
 def region(region):
 
     if region == "all":
-        ec2 = boto3.client('ec2')
-        regions = ec2.describe_regions()
-        for region in regions['RegionName']:
-            list_old_snapshots(region)
+        e = boto3.client('ec2')
+        regions_list = e.describe_regions()
+        regions = regions_list["Regions"]
+        for region in regions:
+            list_old_snapshots(region['RegionName'])
     else:
         list_old_snapshots(region)
 
