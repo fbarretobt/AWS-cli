@@ -117,7 +117,7 @@ def list_old_snapshots(region):
     ec2 = boto3.client('ec2', region)
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
-    snapshot_count=len(snapshot_response)
+    snapshot_count=len(snapshot_response['Snapshots'])
     count = 0
 
     for snapshot in snapshot_response['Snapshots']:
