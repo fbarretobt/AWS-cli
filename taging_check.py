@@ -42,7 +42,7 @@ def no_DR_tag(snapshotid, tags, region):
     except:
         name ="No Name Tag"
 
-    DR_not_tagged_list[region].update({snapshotid:"NO DR Tag", "Instance":instance, "Name":name})
+    DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name}})
 
     return DR_not_tagged_list
 
@@ -117,7 +117,14 @@ def list_old_snapshots(region):
     ec2 = boto3.client('ec2', region)
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
+    snapshot_count=len(snapshot_response)
+    count = 0
+
     for snapshot in snapshot_response['Snapshots']:
+
+        count +=1
+
+        print("Working on ", count, "of ", snapshot_count, "in ", region)
 
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
 
@@ -143,7 +150,11 @@ def region(region):
         e = boto3.client('ec2')
         regions_list = e.describe_regions()
         regions = regions_list["Regions"]
+        region_count=len(regions)
+        count=0 
         for region in regions:
+            count +=1 
+            print("Working on ", count, "of ", region_count, "in ")
             DR_tagged_list[region['RegionName']]={}
             DR_not_tagged_list[region['RegionName']]={}
             not_tagged_list[region['RegionName']]={}
@@ -172,5 +183,3 @@ if __name__ == '__main__':
 
     with open("not_tagged_list.json","w") as file:
         json.dump(not_tagged_list,file, indent=4, default=str)
-
-
