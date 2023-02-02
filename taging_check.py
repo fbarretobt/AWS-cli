@@ -8,18 +8,18 @@ import botocore
 
 
 
-DR_tagged_list=[]
-DR_not_tagged_list=[]
-not_tagged_list=[]
+DR_tagged_list={}
+DR_not_tagged_list={}
+not_tagged_list={}
 
 ##################################################################################
 ### If it does not have the DR tag
-def no_DR_tag(snapshotid, tags):
+def no_DR_tag(snapshotid, tags, region):
 
     #for tag in tags:
     #    print(list(tag.values()))
 
-    DR_not_tagged_list.append(snapshotid)
+    not_tagged_list[region].update(snapshotid)
 
     return
 
@@ -27,10 +27,10 @@ def no_DR_tag(snapshotid, tags):
 
 ##################################################################################
 ### If it has the DR tag
-def DR_tag(snapshotid):
+def DR_tag(snapshotid, region):
 
-    DR_tagged_list.append(snapshotid)
-
+     
+    DR_tagged_list[region].update(snapshotid)
 
     return
 
@@ -39,9 +39,9 @@ def DR_tag(snapshotid):
 
 ##################################################################################
 ## what to do if it has no tag 
-def no_tag(snapshotid):
+def no_tag(snapshotid, region):
 
-    not_tagged_list.append(snapshotid)
+    not_tagged_list[region].update(snapshotid)
 
 
 
@@ -56,14 +56,14 @@ def snapshot_tag_info(snapshotid, region):
       
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
  
-            DR_tag(snapshotid)
+            DR_tag(snapshotid, region)
         else:
 
             #print("Tag List")
-            no_DR_tag(snapshotid, snapshot.tags)
+            no_DR_tag(snapshotid, snapshot.tags , region)
 
     else :
-        no_tag(snapshotid)
+        no_tag(snapshotid, region)
 
     return
 
@@ -101,6 +101,10 @@ def region(region):
         regions_list = e.describe_regions()
         regions = regions_list["Regions"]
         for region in regions:
+            DR_tagged_list[region['RegionName']]={}
+            DR_not_tagged_list[region['RegionName']]={}
+            not_tagged_list[region['RegionName']]={}
+
             list_old_snapshots(region['RegionName'])
     else:
         list_old_snapshots(region)
