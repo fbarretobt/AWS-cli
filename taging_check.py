@@ -169,7 +169,7 @@ def region(region):
         list_old_snapshots(region)
 
 ##################################################################################
-### initiates the function calls 
+### initiates the function calls  and add on terminal call for functions 
 if __name__ == '__main__':
 
     globals()[sys.argv[1]](sys.argv[2])
