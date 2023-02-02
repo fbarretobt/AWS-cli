@@ -12,11 +12,24 @@ DR_tagged_list={}
 DR_not_tagged_list={}
 not_tagged_list={}
 
+
+def print_ec2_tagname(instance_id, region):
+    ec2 = boto3.resource("ec2", region)
+    ec2instance = ec2.Instance(instance_id)
+    instancename = ''
+    for tags in ec2instance.tags:
+        if tags["Key"] == 'Name':
+            instancename = tags["Value"]
+    print(RegionName)
+    return instancename
+
+
+
 ##################################################################################
 ### If it does not have the DR tag
-def no_DR_tag(snapshotid, tags, region):
+def no_DR_tag(snapshotid, tags, region, instance_name):
     
-    DR_not_tagged_list[region].update({"Snap":snapshotid})
+    DR_not_tagged_list[region].update({snapshotid:instance_name})
 
     return DR_not_tagged_list
 
@@ -24,10 +37,10 @@ def no_DR_tag(snapshotid, tags, region):
 
 ##################################################################################
 ### If it has the DR tag
-def DR_tag(snapshotid, region):
+def DR_tag(snapshotid, region, instance_name):
 
     
-    DR_tagged_list[region].update({"Snap":snapshotid})
+    DR_tagged_list[region].update({snapshotid:"DR-Tier"})
 
     return DR_tagged_list
 
@@ -36,9 +49,9 @@ def DR_tag(snapshotid, region):
 
 ##################################################################################
 ## what to do if it has no tag 
-def no_tag(snapshotid, region):
+def no_tag(snapshotid, region, instance_name):
     
-    not_tagged_list[region].update({"Snap":snapshotid})
+    not_tagged_list[region].update({snapshotid:"NO TAGS"})
     return not_tagged_list
 
 
@@ -46,7 +59,7 @@ def no_tag(snapshotid, region):
 
 ##################################################################################
 ### Here we check for the tagging information if it has tags or not or a specific tag 
-def snapshot_tag_info(snapshotid, region):
+def snapshot_tag_info(snapshotid, region, instance_name):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
     
@@ -55,16 +68,16 @@ def snapshot_tag_info(snapshotid, region):
       
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
  
-            DR_tag(snapshotid, region)
-            print(DR_not_tagged_list, not_tagged_list, DR_not_tagged_list)
+            DR_tag(snapshotid, region, instance_name)
+            
         else:
 
            
-            no_DR_tag(snapshotid, snapshot.tags , region)
-            print(DR_not_tagged_list, not_tagged_list, DR_not_tagged_list)
+            no_DR_tag(snapshotid, snapshot.tags , region, instance_name)
+
     else :
-        no_tag(snapshotid, region)
-        print(DR_not_tagged_list, not_tagged_list, DR_not_tagged_list)
+        no_tag(snapshotid, region, instance_name)
+
 
     return
 
@@ -84,8 +97,28 @@ def list_old_snapshots(region):
 
 
         if days_old >= 29:
+            try:
 
-            snapshot_tag_info(snapshot['SnapshotId'], region)
+                volume_response = ec2.describe_volumes(VolumeIds=[snapshot['VolumeId']])
+                volume = volume_response['Volumes'][0]
+
+                for attachment in volume['Attachments']:
+
+
+                    instance_name=print_ec2_tagname(attachment['InstanceId'], region)
+
+
+            except botocore.exceptions.ClientError as error:
+
+                if error.response['Error']['Code'] == 'InvalidVolume.NotFound':
+
+                    continue
+
+                else: # Unknown exception
+
+                    print(error.response)
+            
+            snapshot_tag_info(snapshot['SnapshotId'], region, instance_name)
 
             continue
         else :
