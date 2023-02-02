@@ -20,7 +20,7 @@ def print_ec2_tagname(instance_id, region):
     for tags in ec2instance.tags:
         if tags["Key"] == 'Name':
             instancename = tags["Value"]
-    print(RegionName)
+
     return instancename
 
 
@@ -29,6 +29,7 @@ def print_ec2_tagname(instance_id, region):
 ### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags, region, instance_name):
     
+    print(snapshotid, instance_name)
     DR_not_tagged_list[region].update({snapshotid:instance_name})
 
     return DR_not_tagged_list
@@ -50,7 +51,7 @@ def DR_tag(snapshotid, region, instance_name):
 ##################################################################################
 ## what to do if it has no tag 
 def no_tag(snapshotid, region, instance_name):
-    
+    print(snapshotid)
     not_tagged_list[region].update({snapshotid:"NO TAGS"})
     return not_tagged_list
 
