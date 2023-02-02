@@ -15,10 +15,7 @@ not_tagged_list={}
 ##################################################################################
 ### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags, region):
-
-    #for tag in tags:
-    #    print(list(tag.values()))
-    print("nO dr ", region)
+    
     not_tagged_list[region].update({"Snap":snapshotid})
 
     return
@@ -29,7 +26,7 @@ def no_DR_tag(snapshotid, tags, region):
 ### If it has the DR tag
 def DR_tag(snapshotid, region):
 
-    print("DR ", region)
+    
     DR_tagged_list[region].update({"Snap":snapshotid})
 
     return
@@ -40,7 +37,7 @@ def DR_tag(snapshotid, region):
 ##################################################################################
 ## what to do if it has no tag 
 def no_tag(snapshotid, region):
-    print("No Tag", region)
+    
     not_tagged_list[region].update({"Snap":snapshotid})
 
 
@@ -51,7 +48,7 @@ def no_tag(snapshotid, region):
 def snapshot_tag_info(snapshotid, region):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
-    print("Tag info ", region)
+    
 
     if snapshot.tags is not None:
       
@@ -60,7 +57,7 @@ def snapshot_tag_info(snapshotid, region):
             DR_tag(snapshotid, region)
         else:
 
-            #print("Tag List")
+           
             no_DR_tag(snapshotid, snapshot.tags , region)
 
     else :
@@ -74,6 +71,10 @@ def snapshot_tag_info(snapshotid, region):
 ### This funsction lists all snapshots older than 29 days 
 def list_old_snapshots(region):
 
+    print(DR_not_tagged_list)
+    print(DR_not_tagged_list)
+    print(not_tagged_list)
+
     ec2 = boto3.client('ec2', region)
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
@@ -83,7 +84,7 @@ def list_old_snapshots(region):
 
 
         if days_old >= 29:
-            print("List OLd on", region)
+
             snapshot_tag_info(snapshot['SnapshotId'], region)
 
             continue
@@ -108,6 +109,11 @@ def region(region):
 
             list_old_snapshots(region['RegionName'])
     else:
+
+        DR_tagged_list[region]={}
+        DR_not_tagged_list[region]={}
+        not_tagged_list[region]={}    
+            
         list_old_snapshots(region)
 
 ##################################################################################
