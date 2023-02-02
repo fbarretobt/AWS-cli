@@ -71,16 +71,16 @@ def snapshot_tag_info(snapshotid, region):
 
 
             DR_tag(snapshotid, region)
-            print(region,snapshotid, "DR-tier Tagged")
+            #print(region,snapshotid, "DR-tier Tagged")
             
         else:
 
             no_DR_tag(snapshotid, snapshot.tags , region)
-            print(region,snapshotid, "not DR-tier tag")
+            #print(region,snapshotid, "not DR-tier tag")
 
     else :
         no_tag(snapshotid, region)
-        print(region, snapshotid, "No Tags" )
+        #print(region, snapshotid, "No Tags" )
 
 
     return
@@ -142,17 +142,13 @@ if __name__ == '__main__':
     globals()[sys.argv[1]](sys.argv[2])
     
 
-    print("snapshots with DR tag: ")
-    print(DR_tagged_list)
-    print("#")
-    print("#")
-    print("#")
-    print("snapshots with no DR tag: ")
-    print(DR_not_tagged_list)
-    print("#")
-    print("#")
-    print("#")
-    print("snapshots with no tag: ")
-    print(not_tagged_list)
+    with open("DR_tagged_list.json","w") as file:
+        json.dump(DR_tagged_list,file)
+
+    with open("DR_not_tagged_list.json","w") as file:
+        json.dump(DR_not_tagged_list,file)
+
+    with open("not_tagged_list.json","w") as file:
+        json.dump(not_tagged_list,file)
 
 
