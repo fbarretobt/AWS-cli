@@ -48,8 +48,8 @@ def no_tag(snapshotid):
 
 ##################################################################################
 ### Here we check for the tagging information if it has tags or not or a specific tag 
-def snapshot_tag_info(snapshotid):
-    ec2 = boto3.resource('ec2')
+def snapshot_tag_info(snapshotid, region):
+    ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
 
     if snapshot.tags is not None:
@@ -73,8 +73,8 @@ def snapshot_tag_info(snapshotid):
 ### This funsction lists all snapshots older than 29 days 
 def list_old_snapshots(region):
 
-    ec2 = boto3.client('ec2')
-    snapshot_response = ec2.describe_snapshots(OwnerIds=['self'], RegionId=[region])
+    ec2 = boto3.client('ec2', region)
+    snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
     for snapshot in snapshot_response['Snapshots']:
 
@@ -83,7 +83,7 @@ def list_old_snapshots(region):
 
         if days_old >= 29:
 
-            snapshot_tag_info(snapshot['SnapshotId'])
+            snapshot_tag_info(snapshot['SnapshotId'], region)
 
             continue
         else :
