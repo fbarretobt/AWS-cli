@@ -71,10 +71,10 @@ def snapshot_tag_info(snapshotid):
 
 ##################################################################################
 ### This funsction lists all snapshots older than 29 days 
-def list_old_snapshots():
+def list_old_snapshots(region):
 
     ec2 = boto3.client('ec2')
-    snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
+    snapshot_response = ec2.describe_snapshots(OwnerIds=['self'], RegionId=[region])
 
     for snapshot in snapshot_response['Snapshots']:
 
@@ -90,24 +90,40 @@ def list_old_snapshots():
             continue
 
     return
-    
+
+
+##################################################################################
+### define whihch region to use or loop all the regions 
+def region(region):
+
+    if region == "all":
+        regions = boto.ec2.regions()
+        for region in regions['Regions']:
+            list_old_snapshots(region)
+    else:
+        list_old_snapshots(region)
 
 ##################################################################################
 ### initiates the function calls 
 if __name__ == '__main__':
-    list_old_snapshots()
+    try:
+        region(*sys.argv[1:])
+        
+
+        print("snapshots with DR tag: ")
+        print(DR_tagged_list)
+        print("#")
+        print("#")
+        print("#")
+        print("snapshots with no DR tag: ")
+        print(DR_not_tagged_list)
+        print("#")
+        print("#")
+        print("#")
+        print("snapshots with no tag: ")
+        print(not_tagged_list)
+
+    except :
+        print(error)
 
 
-
-    print("snapshots with DR tag: ")
-    print(DR_tagged_list)
-    print("#")
-    print("#")
-    print("#")
-    print("snapshots with no DR tag: ")
-    print(DR_not_tagged_list)
-    print("#")
-    print("#")
-    print("#")
-    print("snapshots with no tag: ")
-    print(not_tagged_list)
