@@ -65,7 +65,7 @@ def DR_tag(snapshotid,tags, region, days_old, encrypted, count):
         name ="No Name Tag"
     DR_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
 
-    print(count)
+    print("Counting :"count)
 
     return DR_tagged_list
 
@@ -127,7 +127,7 @@ def list_old_snapshots(region):
 
     for snapshot in snapshot_response['Snapshots']: 
 
-        print("Working on ", count, "of ", snapshot_count, "in ", region)
+        #print("Working on ", count, "of ", snapshot_count, "in ", region)
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
 
 
