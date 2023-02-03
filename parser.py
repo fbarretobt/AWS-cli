@@ -24,7 +24,7 @@ emp2 = Employee("John", 3000)
 emp3 = Employee("Zara", 2000)
 emp4 = Employee("Manni", 5000)
 
-print("Employee Name: "emp1.name)
+print("Employee Name: ", emp1.name)
 print(emp1.name, "Salary : ", emp1.salary)
 
 
