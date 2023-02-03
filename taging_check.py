@@ -30,7 +30,7 @@ def print_ec2_tagname(instance_id, region):
 
 ##################################################################################
 ### If it does not have the DR tag
-def no_DR_tag(snapshotid, tags, region, days_old, encrypted):
+def no_DR_tag(snapshotid, tags, region, days_old, encrypted, count):
  
 
     try :
@@ -44,7 +44,7 @@ def no_DR_tag(snapshotid, tags, region, days_old, encrypted):
     except:
         name ="No Name Tag"
 
-    DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
+    DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}}, "Total Count": count)
 
     return DR_not_tagged_list
 
@@ -52,7 +52,7 @@ def no_DR_tag(snapshotid, tags, region, days_old, encrypted):
 
 ##################################################################################
 ### If it has the DR tag
-def DR_tag(snapshotid,tags, region, days_old, encrypted):
+def DR_tag(snapshotid,tags, region, days_old, encrypted, count):
 
     try :
         instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', tags), None)
@@ -73,7 +73,7 @@ def DR_tag(snapshotid,tags, region, days_old, encrypted):
 
 ##################################################################################
 ## what to do if it has no tag 
-def no_tag(snapshotid, region, days_old, encrypted):
+def no_tag(snapshotid, region, days_old, encrypted, count):
 
     not_tagged_list[region].update({snapshotid:"NO TAGS", "Days Old":days_old, "Encrypted":encrypted})
     
@@ -84,7 +84,7 @@ def no_tag(snapshotid, region, days_old, encrypted):
 
 ##################################################################################
 ### Here we check for the tagging information if it has tags or not or a specific tag 
-def snapshot_tag_info(snapshotid, region, days_old, encrypted):
+def snapshot_tag_info(snapshotid, region, days_old, encrypted, count):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
     
@@ -94,16 +94,16 @@ def snapshot_tag_info(snapshotid, region, days_old, encrypted):
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
 
 
-            DR_tag(snapshotid, snapshot.tags, region, days_old, encrypted)
+            DR_tag(snapshotid, snapshot.tags, region, days_old, encrypted, count)
             #print(region,snapshotid, "DR-tier Tagged")
             
         else:
 
-            no_DR_tag(snapshotid, snapshot.tags , region, days_old, encrypted)
+            no_DR_tag(snapshotid, snapshot.tags , region, days_old, encrypted, count)
             #print(region,snapshotid, "not DR-tier tag")
 
     else :
-        no_tag(snapshotid, region, days_old, encrypted)
+        no_tag(snapshotid, region, days_old, encrypted, count)
         #print(region, snapshotid, "No Tags" )
 
 
@@ -122,9 +122,7 @@ def list_old_snapshots(region):
     snapshot_count=len(snapshot_response['Snapshots'])
     count = 0
 
-    for snapshot in snapshot_response['Snapshots']:
-
-        count +=1      
+    for snapshot in snapshot_response['Snapshots']: 
 
         print("Working on ", count, "of ", snapshot_count, "in ", region)
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
@@ -134,7 +132,7 @@ def list_old_snapshots(region):
 
             count +=1
             print("Working on ", count, "of ", snapshot_count, "in ", region)
-            snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"])
+            snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], count)
             continue
 
         else :
@@ -184,12 +182,12 @@ if __name__ == '__main__':
     
 
     with open("DR_tagged_list.json","w") as file:
-        json.dump(sorted(DR_tagged_list.items(), key = lambda x: x[2]['Name']),file, indent=4, default=str)
+        json.dump(DR_tagged_list,file, indent=4, default=str)
 
     with open("DR_not_tagged_list.json","w") as file:
-        json.dump(sorted(DR_not_tagged_list.items(), key = lambda x: x[2]['Name']),file, indent=4, default=str)
+        json.dump(DR_not_tagged_list,file, indent=4, default=str)
 
     with open("not_tagged_list.json","w") as file:
-        json.dump(sorted(not_tagged_list.items(), key = lambda x: x[2]['Encrypted']),file, indent=4, default=str)
+        json.dump(not_tagged_list,file, indent=4, default=str)
 
     print(region_total_count)
