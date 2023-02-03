@@ -43,7 +43,7 @@ def no_DR_tag(snapshotid, tags, region, days_old, encrypted, count):
 
     DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
 
-    print(count)
+    print("Counting :",count)
 
     return DR_not_tagged_list
 
@@ -65,7 +65,7 @@ def DR_tag(snapshotid,tags, region, days_old, encrypted, count):
         name ="No Name Tag"
     DR_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
 
-    print("Counting :"count)
+    print("Counting :",count)
 
     return DR_tagged_list
 
@@ -78,7 +78,7 @@ def no_tag(snapshotid, region, days_old, encrypted, count):
 
     not_tagged_list[region].update({snapshotid:"NO TAGS", "Days Old":days_old, "Encrypted":encrypted})
 
-    print(count)
+    print("Counting :",count)
     
     return not_tagged_list
 
@@ -98,16 +98,15 @@ def snapshot_tag_info(snapshotid, region, days_old, encrypted, count):
 
 
             DR_tag(snapshotid, snapshot.tags, region, days_old, encrypted, count)
-            #print(region,snapshotid, "DR-tier Tagged")
+
             
         else:
 
             no_DR_tag(snapshotid, snapshot.tags , region, days_old, encrypted, count)
-            #print(region,snapshotid, "not DR-tier tag")
+
 
     else :
         no_tag(snapshotid, region, days_old, encrypted, count)
-        #print(region, snapshotid, "No Tags" )
 
 
     return
