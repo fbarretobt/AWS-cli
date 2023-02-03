@@ -12,10 +12,7 @@ DR_tagged_list={}
 DR_not_tagged_list={}
 not_tagged_list={}
 
-region_total_count_not_DR_tagged=[]
-region_total_count_not_tagged=[]
-region_total_count_DR_tagged=[]
-region_total_count=[]
+
 def print_ec2_tagname(instance_id, region):
     ec2 = boto3.resource("ec2", region)
     ec2instance = ec2.Instance(instance_id)
@@ -44,7 +41,9 @@ def no_DR_tag(snapshotid, tags, region, days_old, encrypted, count):
     except:
         name ="No Name Tag"
 
-    DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}}, "Total Count": count)
+    DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
+
+    print(count)
 
     return DR_not_tagged_list
 
@@ -66,6 +65,8 @@ def DR_tag(snapshotid,tags, region, days_old, encrypted, count):
         name ="No Name Tag"
     DR_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
 
+    print(count)
+
     return DR_tagged_list
 
 
@@ -76,6 +77,8 @@ def DR_tag(snapshotid,tags, region, days_old, encrypted, count):
 def no_tag(snapshotid, region, days_old, encrypted, count):
 
     not_tagged_list[region].update({snapshotid:"NO TAGS", "Days Old":days_old, "Encrypted":encrypted})
+
+    print(count)
     
     return not_tagged_list
 
@@ -139,7 +142,6 @@ def list_old_snapshots(region):
 
             continue
 
-        region_total_count.append(region, count)
 
     return
 
@@ -189,5 +191,3 @@ if __name__ == '__main__':
 
     with open("not_tagged_list.json","w") as file:
         json.dump(not_tagged_list,file, indent=4, default=str)
-
-    print(region_total_count)
