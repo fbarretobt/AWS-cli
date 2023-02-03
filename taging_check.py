@@ -62,7 +62,7 @@ def DR_tag(snapshotid,tags, region):
         name=name_info["Value"]
     except:
         name ="No Name Tag"
-    DR_tagged_list[region].update({snapshotid:"DR-Tier", "Instance":instance, "Name":name})
+    DR_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name}})
 
     return DR_tagged_list
 
