@@ -28,8 +28,7 @@ def print_ec2_tagname(instance_id, region):
 ##################################################################################
 ### If it does not have the DR tag
 def no_DR_tag(snapshotid, tags, region):
-    
-    print(tags)
+ 
 
     try :
         instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', tags), None)
