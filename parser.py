@@ -21,8 +21,13 @@ emp1 = Employee("Sarah", 2000)
 emp2 = Employee("John", 3000)
 
 
-emp1 = Employee("Zara", 2000)
-emp2 = Employee("Manni", 5000)
+emp3 = Employee("Zara", 2000)
+emp4 = Employee("Manni", 5000)
+
+print(emp1.name)
+
+
+
 print ("Employee.__doc__:", Employee.__doc__)
 print ("Employee.__name__:", Employee.__name__)
 print ("Employee.__module__:", Employee.__module__)
