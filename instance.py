@@ -21,8 +21,6 @@ def print_ec2_tagname(instance_id):
     return instancename
 
 
-
-
 ec2 = boto3.client('ec2')
 snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
