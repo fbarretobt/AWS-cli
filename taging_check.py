@@ -124,7 +124,7 @@ def list_old_snapshots(region):
         count +=1
 
         print("Working on ", count, "of ", snapshot_count, "in ", region)
-
+        print(snapshot)
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
 
 
