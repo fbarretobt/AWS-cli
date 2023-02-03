@@ -41,7 +41,8 @@ def no_DR_tag(snapshotid, tags, region, days_old, encrypted, count):
     except:
         name ="No Name Tag"
 
-    DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}},{"Total":count})
+    DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
+    DR_not_tagged_list[region].update({"Total":count})
 
     print("Counting DR not tagged :",count)
 
@@ -63,7 +64,8 @@ def DR_tag(snapshotid,tags, region, days_old, encrypted, count):
         name=name_info["Value"]
     except:
         name ="No Name Tag"
-    DR_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}},{"Total":count})
+    DR_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
+    DR_tagged_list[region].update({"Total":count})
 
     print("Counting DR Tagged :",count)
 
@@ -76,7 +78,8 @@ def DR_tag(snapshotid,tags, region, days_old, encrypted, count):
 ## what to do if it has no tag 
 def no_tag(snapshotid, region, days_old, encrypted, count):
 
-    not_tagged_list[region].update({snapshotid:"NO TAGS", "Days Old":days_old, "Encrypted":encrypted},{"Total":count})
+    not_tagged_list[region].update({snapshotid:"NO TAGS", "Days Old":days_old, "Encrypted":encrypted})
+    not_tagged_list[region].update({"Total":count})
 
     print("Counting Not Tagged :",count)
     
