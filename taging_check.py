@@ -12,7 +12,10 @@ DR_tagged_list={}
 DR_not_tagged_list={}
 not_tagged_list={}
 
-
+region_total_count_not_DR_tagged=[]
+region_total_count_not_tagged=[]
+region_total_count_DR_tagged=[]
+region_total_count=[]
 def print_ec2_tagname(instance_id, region):
     ec2 = boto3.resource("ec2", region)
     ec2instance = ec2.Instance(instance_id)
@@ -121,7 +124,7 @@ def list_old_snapshots(region):
 
     for snapshot in snapshot_response['Snapshots']:
 
-        count +=1
+        count +=1      
 
         print("Working on ", count, "of ", snapshot_count, "in ", region)
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
@@ -129,13 +132,16 @@ def list_old_snapshots(region):
 
         if days_old >= 29:
 
+            count +=1
+            print("Working on ", count, "of ", snapshot_count, "in ", region)
             snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"])
-
             continue
 
         else :
 
             continue
+
+        region_total_count.append(region, count)
 
     return
 
@@ -171,13 +177,19 @@ def region(region):
 if __name__ == '__main__':
 
     globals()[sys.argv[1]](sys.argv[2])
+
+
+
+
     
 
     with open("DR_tagged_list.json","w") as file:
-        json.dump(sorted(DR_tagged_list.items(), key = lambda x: x[1]['marks']),file, indent=4, default=str)
+        json.dump(sorted(DR_tagged_list.items(), key = lambda x: x[2]['Name']),file, indent=4, default=str)
 
     with open("DR_not_tagged_list.json","w") as file:
-        json.dump(sorted(DR_not_tagged_list.items(), key = lambda x: x[1]['marks']),file, indent=4, default=str)
+        json.dump(sorted(DR_not_tagged_list.items(), key = lambda x: x[2]['Name']),file, indent=4, default=str)
 
     with open("not_tagged_list.json","w") as file:
-        json.dump(sorted(not_tagged_list.items(), key = lambda x: x[1]['marks']),file, indent=4, default=str)
+        json.dump(sorted(not_tagged_list.items(), key = lambda x: x[2]['Encrypted']),file, indent=4, default=str)
+
+    print(region_total_count)
