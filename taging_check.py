@@ -27,7 +27,7 @@ def print_ec2_tagname(instance_id, region):
 
 ##################################################################################
 ### If it does not have the DR tag
-def no_DR_tag(snapshotid, tags, region, days_old):
+def no_DR_tag(snapshotid, tags, region, days_old, encrypted):
  
 
     try :
@@ -49,7 +49,7 @@ def no_DR_tag(snapshotid, tags, region, days_old):
 
 ##################################################################################
 ### If it has the DR tag
-def DR_tag(snapshotid,tags, region, days_old):
+def DR_tag(snapshotid,tags, region, days_old, encrypted):
 
     try :
         instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', tags), None)
@@ -174,10 +174,10 @@ if __name__ == '__main__':
     
 
     with open("DR_tagged_list.json","w") as file:
-        json.dump(DR_tagged_list,file, indent=4, default=str)
+        json.dump(sorted(DR_tagged_list.items(), key = lambda x: x[1]['marks']),file, indent=4, default=str)
 
     with open("DR_not_tagged_list.json","w") as file:
-        json.dump(DR_not_tagged_list,file, indent=4, default=str)
+        json.dump(sorted(DR_not_tagged_list.items(), key = lambda x: x[1]['marks']),file, indent=4, default=str)
 
     with open("not_tagged_list.json","w") as file:
-        json.dump(not_tagged_list,file, indent=4, default=str)
+        json.dump(sorted(not_tagged_list.items(), key = lambda x: x[1]['marks']),file, indent=4, default=str)
