@@ -41,7 +41,7 @@ def no_DR_tag(snapshotid, tags, region, days_old):
     except:
         name ="No Name Tag"
 
-    DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old}})
+    DR_not_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
 
     return DR_not_tagged_list
 
@@ -61,7 +61,7 @@ def DR_tag(snapshotid,tags, region, days_old):
         name=name_info["Value"]
     except:
         name ="No Name Tag"
-    DR_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old}})
+    DR_tagged_list[region].update({snapshotid:{ "Instance":instance, "Name":name, "Days Old":days_old, "Encrypted":encrypted}})
 
     return DR_tagged_list
 
@@ -70,9 +70,9 @@ def DR_tag(snapshotid,tags, region, days_old):
 
 ##################################################################################
 ## what to do if it has no tag 
-def no_tag(snapshotid, region, days_old):
+def no_tag(snapshotid, region, days_old, encrypted):
 
-    not_tagged_list[region].update({snapshotid:"NO TAGS", "Days Old":days_old})
+    not_tagged_list[region].update({snapshotid:"NO TAGS", "Days Old":days_old, "Encrypted":encrypted})
     
     return not_tagged_list
 
@@ -81,7 +81,7 @@ def no_tag(snapshotid, region, days_old):
 
 ##################################################################################
 ### Here we check for the tagging information if it has tags or not or a specific tag 
-def snapshot_tag_info(snapshotid, region, days_old):
+def snapshot_tag_info(snapshotid, region, days_old, encrypted):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
     
@@ -91,16 +91,16 @@ def snapshot_tag_info(snapshotid, region, days_old):
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
 
 
-            DR_tag(snapshotid, snapshot.tags, region, days_old)
+            DR_tag(snapshotid, snapshot.tags, region, days_old, encrypted)
             #print(region,snapshotid, "DR-tier Tagged")
             
         else:
 
-            no_DR_tag(snapshotid, snapshot.tags , region, days_old)
+            no_DR_tag(snapshotid, snapshot.tags , region, days_old, encrypted)
             #print(region,snapshotid, "not DR-tier tag")
 
     else :
-        no_tag(snapshotid, region, days_old)
+        no_tag(snapshotid, region, days_old, encrypted)
         #print(region, snapshotid, "No Tags" )
 
 
@@ -124,13 +124,12 @@ def list_old_snapshots(region):
         count +=1
 
         print("Working on ", count, "of ", snapshot_count, "in ", region)
-        print(snapshot)
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
 
 
         if days_old >= 29:
 
-            snapshot_tag_info(snapshot['SnapshotId'], region, days_old)
+            snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"])
 
             continue
 
