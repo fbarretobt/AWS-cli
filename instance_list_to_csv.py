@@ -85,9 +85,18 @@ def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryptio
 
 ##################################################################################
 ### convert output to csv  
-def convert_csv(items_dic):
-    pass
+def convert_csv(items_dict):
+    file_name = "list.csv"
+    header = "Name, Region, Days Old, Hours Old, Mount Point , Encryption"
+    opened_file = open(file_name, 'a')
+    opened_file.write("\n",header)
 
+    for item in items_dict.values():
+        
+	    opened_file.write("\n",item["Name"],",",item["Region"],",",item["Days Old"],",",item["Hours Old"],",",item["Mount Point"],",",item["Encryption"])
+    
+    opened_file.close()
+    
 
 ##################################################################################
 ### define whihch region to use or loop all the regions 
@@ -116,4 +125,4 @@ if __name__ == '__main__':
     globals()[sys.argv[1]](sys.argv[2])
 
 
-print(snapshot_dict)
+convert_csv(snapshot_dict)
