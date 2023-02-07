@@ -90,16 +90,18 @@ def convert_csv(items_dict):
     header = "Name, Region, Days Old, Hours Old, Mount Point , Encryption \n"
     opened_file = open(file_name, 'a')
     opened_file.write(header)
+    opened_file.close()
 
     for item in items_dict.values():
-        
+        opened_file = open(file_name, 'a')
         key_list= list(item)
         devicename = key_list[5]
         line = "\n" + item["Name"] + "," + item["Region"] + "," + str(item["Days Old"]) + "," + str(item["Hours Old"]) + "," + devicename + ","+ str(item["Encryption"])
         #print(line)
         opened_file.write(line)
+        opened_file.close()
     
-    opened_file.close()
+    
     
 
 ##################################################################################
