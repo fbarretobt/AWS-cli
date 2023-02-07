@@ -63,7 +63,7 @@ def create_snapshot_dict(instance, name, region, days_old, snapshotid):
 
         snapshot_dict[name].update({"Snap Count":snapshot_count})
     except:
-        snapshot_dict[name] = {"Snap Count":snapshot_count}
+        snapshot_dict[name] = {"Snap Count":1}
 
 ##################################################################################
 ### convert output to csv  
