@@ -39,7 +39,7 @@ def snapshot_tag_info(snapshotid, region, days_old):
             except:
                 name ="No Name Tag"
 
-            print(instance, name)
+            print(instance, name, region)
     else :
         pass
 
