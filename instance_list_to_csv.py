@@ -6,6 +6,9 @@ from datetime import datetime, timezone
 import argparse
 import botocore
 
+
+snapshot_dict = {}
+
 ##################################################################################
 ### Get all spanshots in the given region 
 def get_snapshot(region):
@@ -21,7 +24,8 @@ def get_snapshot(region):
 
 
 
-
+##################################################################################
+### Get all spanshots Tag info in the given region 
 def snapshot_tag_info(snapshotid, region, days_old):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
@@ -39,13 +43,20 @@ def snapshot_tag_info(snapshotid, region, days_old):
             except:
                 name ="No Name Tag"
 
-            print(instance, name, region, days_old)
+            print(instance, name, region, days_old, snapshotid)
     else :
         pass
 
     return
-    
 
+
+def create_snapshot_dict(instance, name, region, days_old, snapshotid):
+
+    snapshot_dict[snapshotid].update({"Instance":instance, "Name":name,"Region":region, "Days old":days_old })
+
+    
+##################################################################################
+### convert output to csv  
 def convert_csv(snapshotid, volume, region):
     pass
 
@@ -77,3 +88,4 @@ if __name__ == '__main__':
     globals()[sys.argv[1]](sys.argv[2])
 
 
+print(snapshot_dict)
