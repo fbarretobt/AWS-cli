@@ -25,8 +25,8 @@ def get_snapshot(region):
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
         snapshot_tag_info(snapshot['SnapshotId'], region, days_old)
         
-        if count == 100:
-            break
+        #if count == 100:
+        #   break
 
 
 
