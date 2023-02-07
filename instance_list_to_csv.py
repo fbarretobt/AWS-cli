@@ -64,7 +64,7 @@ def snapshot_tag_info(snapshotid, region, days_old, encryption, size):
     return 
 
 
-def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename):
+def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename, size):
     try: 
         snapshot_count = snapshot_dict[name]['Snapshots'] + 1
         snapshot_dict[name].update({"Snapshots":snapshot_count})
