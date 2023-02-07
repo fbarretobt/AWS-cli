@@ -27,7 +27,7 @@ def get_snapshot(region):
         hours = int(seconds // 3600)
         minutes = int((seconds//60)%60)
 
-        hours_old = hours,"Hours ",minutes,"Minutes"
+        hours_old = hours,minutes, "Hours"
         print(hours_old)
         #print(snapshot)
         snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], hours_old)
