@@ -51,8 +51,8 @@ def snapshot_tag_info(snapshotid, region, days_old, encryption, size):
             except:
                 name ="No Name Tag"
             try :
-                devicename=next(filter(lambda obj: obj.get('Key') == 'DeviceName', snapshot.tags), None)
-                devicename=name_info["Value"]
+                device_info=next(filter(lambda obj: obj.get('Key') == 'DeviceName', snapshot.tags), None)
+                devicename=device_info["Value"]
             except:
                 name ="No device Name"
 
@@ -69,7 +69,7 @@ def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryptio
         snapshot_count = snapshot_dict[name]['Snapshots'] + 1
         snapshot_dict[name].update({"Snapshots":snapshot_count})
     except:
-        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old, "Encryption":encryption, devicename:size}
+        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old, "Encryption":encryption, devicename:"Backed up"}
 
 ##################################################################################
 ### convert output to csv  
