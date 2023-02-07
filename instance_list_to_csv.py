@@ -26,11 +26,10 @@ def get_snapshot(region):
         seconds = (datetime.now(timezone.utc) - snapshot['StartTime']).total_seconds()
         hours = int(seconds // 3600)
         minutes = int((seconds//60)%60)
-
-        hours_old = str(hours) + " Hours"
         print(hours_old)
+
         #print(snapshot)
-        snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], hours_old)
+        snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], hours, minutes)
         
         if count == 10:
            break
@@ -39,7 +38,7 @@ def get_snapshot(region):
 
 ##################################################################################
 ### Get all spanshots Tag info in the given region 
-def snapshot_tag_info(snapshotid, region, days_old, encryption, hours_old):
+def snapshot_tag_info(snapshotid, region, days_old, encryption,  hours, minutes):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
     
@@ -63,19 +62,23 @@ def snapshot_tag_info(snapshotid, region, days_old, encryption, hours_old):
                 name ="No device Name"
 
 
-            create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename, hours_old)
+            create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename,  hours, minutes)
     else :
         pass
 
     return 
 
 
-def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename, hours_old):
+def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename,  hours, minutes):
     try: 
         snapshot_count = snapshot_dict[name]['Snapshots'] + 1
-        snapshot_dict[name].update({"Snapshots":snapshot_count, devicename:hours_old})
+        snapshot_dict[name].update({"Snapshots":snapshot_count})
+
+        if snapshot_dict[name]["Hours Old"] > hours:
+            snapshot_dict[name].update({"Hours Old":hours})
     except:
-        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old, "Encryption":encryption, devicename:hours_old}
+
+        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old, "Hours Old":hours, devicename:"Backed UP", "Encryption":encryption}
 
 ##################################################################################
 ### convert output to csv  
