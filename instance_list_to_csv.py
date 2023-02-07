@@ -25,11 +25,10 @@ def snapshot_tag_info(snapshotid, region):
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
 
 
-            print(snapshotid, snapshot.tags, region, days_old, encrypted, count)
+            print(snapshotid, snapshot.tags, region)
 
     else :
-        no_tag(snapshotid, region, days_old, encrypted, count)
-
+        pass
 
     return
     
