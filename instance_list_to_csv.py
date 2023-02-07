@@ -35,7 +35,7 @@ def region(region):
         count=0 
         for region in regions:
             count +=1 
-            print("Working on region", count, "of ", region_count, "(", region, ")")
+            print("Working on region", count, "of ", region_count, "(", region['RegionName'], ")")
 
             get_snapshot(region['RegionName'])
     else:
