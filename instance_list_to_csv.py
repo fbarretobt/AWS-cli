@@ -26,8 +26,8 @@ def get_snapshot(region):
         #print(snapshot)
         snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], snapshot["VolumeSize"])
         
-        if count == 10:
-           break
+        #if count == 10:
+        #   break
 
 
 
