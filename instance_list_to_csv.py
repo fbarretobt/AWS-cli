@@ -23,7 +23,11 @@ def get_snapshot(region):
 
         print("Working on ", count, "of ", snapshot_count, "in ", region)
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
-        print((datetime.now(timezone.utc) - snapshot['StartTime']))
+        total_seconds = (datetime.now(timezone.utc) - snapshot['StartTime']).total_seconds()
+        print(total_seconds)
+        seconds_in_hour = 60 * 60   
+        td_in_hours = total_seconds / seconds_in_hour
+        print(td_in_hours)
         #print(snapshot)
         snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], snapshot["VolumeSize"])
         
