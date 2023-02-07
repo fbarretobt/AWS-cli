@@ -94,9 +94,8 @@ def convert_csv(items_dict):
     for item in items_dict.values():
         
         line = "\n",item["Name"],",",item["Region"],",",item["Days Old"],",",item["Hours Old"],",",item["Mount Point"],",",item["Encryption"]
-	    opened_file.write(line)
-    
-    opened_file.close()
+        opened_file.write(line)
+        opened_file.close()
     
 
 ##################################################################################
