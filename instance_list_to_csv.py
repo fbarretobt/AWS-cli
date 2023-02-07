@@ -30,8 +30,8 @@ def get_snapshot(region):
         #print(snapshot)
         snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], hours, minutes)
         
-        if count == 10:
-           break
+        #if count == 10:
+        #   break
 
 
 
@@ -87,7 +87,7 @@ def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryptio
 ### convert output to csv  
 def convert_csv(items_dict):
     file_name = "list.csv"
-    header = "Name, Region, Days Old, Hours Old, Mount Point , Encryption \n"
+    header = "Name, Snapshots, Region, Days Old, Since Last snapshot in Hrs, Mount Point , Encryption"
     opened_file = open(file_name, 'a')
     opened_file.write(header)
     opened_file.close()
@@ -96,7 +96,7 @@ def convert_csv(items_dict):
         opened_file = open(file_name, 'a')
         key_list= list(item)
         devicename = key_list[5]
-        line = "\n" + item["Name"] + "," + item["Region"] + "," + str(item["Days Old"]) + "," + str(item["Hours Old"]) + "," + devicename + ","+ str(item["Encryption"])
+        line = "\n" + item["Name"] + "," + str(item['Snapshots']) +"," + item["Region"] + "," + str(item["Days Old"]) + "," + str(item["Hours Old"]) + "," + devicename + ","+ str(item["Encryption"])
         #print(line)
         opened_file.write(line)
         opened_file.close()
