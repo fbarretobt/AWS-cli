@@ -57,7 +57,7 @@ def snapshot_tag_info(snapshotid, region, days_old):
 
 def create_snapshot_dict(instance, name, region, days_old, snapshotid):
 
-    snapshot_dict[snapshotid].update({"Instance":instance, "Name":name,"Region":region, "Days old":days_old })
+    snapshot_dict[name].update({"Snap":snapshotid})
 
     
 ##################################################################################
