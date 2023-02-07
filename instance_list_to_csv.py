@@ -81,11 +81,11 @@ def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryptio
             snapshot_dict[name].update({"Hours Old":hours})
     except:
 
-        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old, "Hours Old":hours, devicename:"Backed UP", "Encryption":encryption}
+        snapshot_dict[name] = {"Name":name,"Snapshots":1, "Region":region, "Days Old":days_old, "Hours Old":hours, devicename:"Backed UP", "Encryption":encryption}
 
 ##################################################################################
 ### convert output to csv  
-def convert_csv(snapshotid, volume, region):
+def convert_csv(items_dic):
     pass
 
 
