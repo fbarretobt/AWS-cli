@@ -96,8 +96,9 @@ def convert_csv(items_dict):
         key_list= list(item)
         devicename = key_list[5]
         line = "\n",item["Name"],",",item["Region"],",",item["Days Old"],",",item["Hours Old"],",",devicename,",",item["Encryption"]
-        opened_file.write(line)
-        opened_file.close()
+        print(line)
+        #opened_file.write(line)
+        #opened_file.close()
     
 
 ##################################################################################
