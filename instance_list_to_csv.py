@@ -14,7 +14,7 @@ def get_snapshot(region):
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
     for snapshot in snapshot_response['Snapshots']:
-        print(Snapshot['SnapshotId'])
+        print(snapshot['SnapshotId'])
     pass
 
 
