@@ -23,7 +23,7 @@ def get_snapshot(region):
 
         print("Working on ", count, "of ", snapshot_count, "in ", region)
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
-        print(snapshot)
+        #print(snapshot)
         snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], snapshot["VolumeSize"])
         
         if count == 10:
