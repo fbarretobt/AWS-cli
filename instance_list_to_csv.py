@@ -15,9 +15,13 @@ def get_snapshot(region):
     ec2 = boto3.client('ec2', region)
 
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
-
+    count = 0
+    snapshot_count=len(snapshot_response['Snapshots'])
     for snapshot in snapshot_response['Snapshots']:
-        #print("Working on ", count, "of ", snapshot_count, "in ", region)
+
+        count +=1
+
+        print("Working on ", count, "of ", snapshot_count, "in ", region)
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
         snapshot_tag_info(snapshot['SnapshotId'], region, days_old)
     pass
@@ -29,6 +33,7 @@ def get_snapshot(region):
 def snapshot_tag_info(snapshotid, region, days_old):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
+    
     if snapshot.tags is not None:
       
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
@@ -43,11 +48,11 @@ def snapshot_tag_info(snapshotid, region, days_old):
             except:
                 name ="No Name Tag"
 
-            print(instance, name, region, days_old, snapshotid)
+            create_snapshot_dict(instance, name, region, days_old, snapshotid)
     else :
         pass
 
-    return
+    return 
 
 
 def create_snapshot_dict(instance, name, region, days_old, snapshotid):
