@@ -26,7 +26,7 @@ def get_snapshot(region):
         snapshot_tag_info(snapshot['SnapshotId'], region, days_old)
         
         if count == 100:
-            pass
+            break
 
 
 
