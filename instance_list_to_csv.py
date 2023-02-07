@@ -23,7 +23,7 @@ def get_snapshot(region):
 
         print("Working on ", count, "of ", snapshot_count, "in ", region)
         days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
-        snapshot_tag_info(snapshot['SnapshotId'], region, days_old)
+        snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"])
         
         #if count == 100:
         #   break
@@ -32,7 +32,7 @@ def get_snapshot(region):
 
 ##################################################################################
 ### Get all spanshots Tag info in the given region 
-def snapshot_tag_info(snapshotid, region, days_old):
+def snapshot_tag_info(snapshotid, region, days_old, encryption):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
     
@@ -50,19 +50,19 @@ def snapshot_tag_info(snapshotid, region, days_old):
             except:
                 name ="No Name Tag"
 
-            create_snapshot_dict(instance, name, region, days_old, snapshotid)
+            create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption)
     else :
         pass
 
     return 
 
 
-def create_snapshot_dict(instance, name, region, days_old, snapshotid):
+def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption):
     try: 
         snapshot_count = snapshot_dict[name]['Snapshots'] + 1
-        snapshot_dict[name].update({"Snapshots":snapshot_count, "Region":region, "Days Old":days_old})
+        snapshot_dict[name].update({"Snapshots":snapshot_count})
     except:
-        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old}
+        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old, "Encryption":encryption}
 
 ##################################################################################
 ### convert output to csv  
