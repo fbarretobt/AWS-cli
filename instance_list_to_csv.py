@@ -59,11 +59,10 @@ def snapshot_tag_info(snapshotid, region, days_old):
 
 def create_snapshot_dict(instance, name, region, days_old, snapshotid):
     try: 
-        snapshot_count = snapshot_dict[name]['Snap Count'] + 1
-
-        snapshot_dict[name].update({"Snap Count":snapshot_count})
+        snapshot_count = snapshot_dict[name]['Snapshots'] + 1
+        snapshot_dict[name].update({"Snapshots":snapshot_count, "Region":region, "Days Old":days_old})
     except:
-        snapshot_dict[name] = {"Snap Count":1}
+        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old}
 
 ##################################################################################
 ### convert output to csv  
