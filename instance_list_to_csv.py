@@ -14,26 +14,39 @@ def get_snapshot(region):
     snapshot_response = ec2.describe_snapshots(OwnerIds=['self'])
 
     for snapshot in snapshot_response['Snapshots']:
-        snapshot_tag_info(snapshot['SnapshotId'], region, )
+        #print("Working on ", count, "of ", snapshot_count, "in ", region)
+        days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
+        snapshot_tag_info(snapshot['SnapshotId'], region, days_old)
     pass
 
-def snapshot_tag_info(snapshotid, region):
+
+
+
+def snapshot_tag_info(snapshotid, region, days_old):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
     if snapshot.tags is not None:
       
         if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
+            try :
+                instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', snapshot.tags), None)
+                instance = instance_info["Value"]
+            except:
+                instance = "No Instance ID Tag"
+            try :
+                name_info=next(filter(lambda obj: obj.get('Key') == 'Name', snapshot.tags), None)
+                name=name_info["Value"]
+            except:
+                name ="No Name Tag"
 
-
-            print(snapshotid, snapshot.tags, region)
-
+            print(instance, name)
     else :
         pass
 
     return
     
 
-def convert_csv():
+def convert_csv(snapshotid, volume, region):
     pass
 
 
