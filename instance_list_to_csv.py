@@ -27,9 +27,9 @@ def get_snapshot(region):
         hours = seconds // 3600
         minutes = (seconds//60)%60
 
-        print(int(hours),"Hours ", int(minutes), "Minutes")
+        hours_old = (int(hours),"Hours ", int(minutes), "Minutes")
         #print(snapshot)
-        snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], snapshot["VolumeSize"])
+        snapshot_tag_info(snapshot['SnapshotId'], region, days_old, snapshot["Encrypted"], hours_old)
         
         if count == 10:
            break
@@ -38,7 +38,7 @@ def get_snapshot(region):
 
 ##################################################################################
 ### Get all spanshots Tag info in the given region 
-def snapshot_tag_info(snapshotid, region, days_old, encryption, size):
+def snapshot_tag_info(snapshotid, region, days_old, encryption, hours_old):
     ec2 = boto3.resource('ec2', region)
     snapshot = ec2.Snapshot(snapshotid)
     
@@ -62,19 +62,19 @@ def snapshot_tag_info(snapshotid, region, days_old, encryption, size):
                 name ="No device Name"
 
 
-            create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename, size)
+            create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename, hours_old)
     else :
         pass
 
     return 
 
 
-def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename, size):
+def create_snapshot_dict(instance, name, region, days_old, snapshotid, encryption, devicename, hours_old):
     try: 
         snapshot_count = snapshot_dict[name]['Snapshots'] + 1
-        snapshot_dict[name].update({"Snapshots":snapshot_count, devicename:"Backed up"})
+        snapshot_dict[name].update({"Snapshots":snapshot_count, devicename:hours_old})
     except:
-        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old, "Encryption":encryption, devicename:"Backed up"}
+        snapshot_dict[name] = {"Snapshots":1, "Region":region, "Days Old":days_old, "Encryption":encryption, devicename:hours_old}
 
 ##################################################################################
 ### convert output to csv  
