@@ -1,4 +1,4 @@
-from tracemalloc import Snapshot, Instances
+from tracemalloc import Snapshot 
 import boto3
 import json
 import sys
