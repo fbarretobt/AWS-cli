@@ -28,10 +28,10 @@ def region(region):
             count +=1 
             print("Working on region", count, "of ", region_count, "(", region['RegionName'], ")")
 
-            get_snapshot(region['RegionName'])
+            list_instances(region['RegionName'])
     else:
 
-        get_snapshot(region)
+        list_instances(region)
 
 
 ##################################################################################
