@@ -21,6 +21,8 @@ def list_instances(region):
                 devicename = (device['DeviceName'])
                 volumeID = [(device.get('Ebs', {}).get("VolumeId"))]
                 
+                print(devicename, volumeID)
+
                 if devicename != rootdevice :
                     nonrootdevice = devicename
 
@@ -34,7 +36,7 @@ def list_instances(region):
                     version = tag['Value']
 
 
-            print(name, product, instanceID, version, rootdevice, nonrootdevice, volumeID)
+            #print(name, product, instanceID, version, rootdevice, nonrootdevice, volumeID)
 
         count +=1
         
