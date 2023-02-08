@@ -62,15 +62,15 @@ def list_instances(region):
         #if count == 20:
         #    break        
 
-    create_csv(data_dict)
+    create_csv(data_dict, region)
 
 
 
     return 
 
-def create_csv(data):
-    file_name = "list.csv"
-    header = "Hostname, Product,Version, Instance ID, Root Snapshot, Non Root Snapshot, Region, Root Encryption, Non Root Encription"
+def create_csv(data, region):
+    file_name = region+".csv"
+    header = "Hostname, Product,Version, Instance ID, Root Snapshot, Non Root Snapshot, Region, Encryption"
     opened_file = open(file_name, 'a')
     opened_file.write(header)
     opened_file.close()
