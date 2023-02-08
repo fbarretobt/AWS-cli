@@ -13,6 +13,7 @@ def list_instances(region):
     count = 0
 
     for reservation in Instance_list['Reservations']:
+
         for instance in reservation['Instances']:
             instanceID = (instance['InstanceId'])
             rootdevice = (instance["RootDeviceName"])
@@ -28,7 +29,14 @@ def list_instances(region):
                 volume = ec2.describe_volumes(VolumeIds = [volumeID])
 
                 for volumeinfo in volume['Volumes']:
-                    print(volumeID, volumeinfo['Encrypted'], volumeinfo['SnapshotId'])
+                    encryption = volumeinfo['Encrypted']
+                    snapshot = volumeinfo['SnapshotId']
+                    for device in volumeinfo['Attachments']:
+                        device=(device['Device'])
+                        if device == rootdevice:
+                            rootdeviceSnapshot = snapshot
+                        else:
+                            nonrootsnapshot=snapshot
 
             for tag in instance['Tags']:
 
@@ -40,12 +48,15 @@ def list_instances(region):
                     version = tag['Value']
 
 
-            #print(name, product, instanceID, version, rootdevice, nonrootdevice, volumeID)
+            dict_info = {"Hostname":name, "Product":product,"Instance ID":instanceID, "Root Device":rootdevice, "Non root Device": nonrootdevice, "Root Snapshot": rootsnapshot, "Non Root Snapshot": nonrootsnapshot, "Region":region, "Encryption":encryption}
+
 
         count +=1
         
         if count == 1:
             break        
+
+    return dict_info
 
 ##################################################################################
 ### define whihch region to use or loop all the regions 
