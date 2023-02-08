@@ -11,8 +11,12 @@ def list_instances(region):
     Instance_list = ec2.describe_instances()
 
     count = 0
+    instance_count = len(Instance_list['Reservations'])
     data_dict = {}
     for reservation in Instance_list['Reservations']:
+
+        count +=1
+        print("Working on ", count, "of ", instance_count, "Instances")
 
         for instance in reservation['Instances']:
             instanceID = (instance['InstanceId'])
@@ -51,14 +55,14 @@ def list_instances(region):
             data_dict[name] = {"Hostname":name, "Product":product,"Version":version, "Instance ID":instanceID, "Root Device":rootdevice, "Non root Device": nonrootdevice, "Root Snapshot": rootsnapshot, "Non Root Snapshot": nonrootsnapshot, "Region":region, "Encryption":encryption}
 
 
-        count +=1
+
         
-        if count == 20:
-            break        
+        #if count == 20:
+        #    break        
 
     create_csv(data_dict)
 
-    #print(data_dict)
+
 
     return 
 
@@ -71,7 +75,7 @@ def create_csv(data):
 
     for item in data.values():
         opened_file = open(file_name, 'a')
-        line = "\n" + item["Hostname"] + "," + item['version'] + "," + item['Product'] + "," + item["Instance ID"] + "," + item["Root Snapshot"] + "," + item["Non Root Snapshot"] + "," + item["Region"] + ","+ str(item["Encryption"])
+        line = "\n" + item["Hostname"] + "," + item['Product'] + "," + item['Version'] + "," + item["Instance ID"] + "," + item["Root Snapshot"] + "," + item["Non Root Snapshot"] + "," + item["Region"] + ","+ str(item["Encryption"])
         print(line)
         opened_file.write(line)
         opened_file.close()
