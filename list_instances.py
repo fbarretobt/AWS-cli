@@ -13,7 +13,7 @@ def list_instances(region):
 
     count = 0
 
-    for reservation in Instance_list:
+    for reservation in Instance_list['Reservations']:
         print(reservation)
 
         count +=1
