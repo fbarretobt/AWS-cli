@@ -39,8 +39,10 @@ def list_instances(region):
                         device=(device['Device'])
                         if device == rootdevice:
                             rootsnapshot = snapshot
+                            rootencryption = encryption
                         else:
                             nonrootsnapshot=snapshot
+                            nonrootencryption = encryption
 
             for tag in instance['Tags']:
 
@@ -52,7 +54,7 @@ def list_instances(region):
                     version = tag['Value']
 
 
-            data_dict[name] = {"Hostname":name, "Product":product,"Version":version, "Instance ID":instanceID, "Root Device":rootdevice, "Non root Device": nonrootdevice, "Root Snapshot": rootsnapshot, "Non Root Snapshot": nonrootsnapshot, "Region":region, "Encryption":encryption}
+            data_dict[name] = {"Hostname":name, "Product":product,"Version":version, "Instance ID":instanceID, "Root Device":rootdevice, "Non root Device": nonrootdevice, "Root Snapshot": rootsnapshot, "Non Root Snapshot": nonrootsnapshot, "Region":region, "Root Encryption":rootencryption, "Non Root Encription": nonrootencryption}
 
 
 
@@ -68,15 +70,15 @@ def list_instances(region):
 
 def create_csv(data):
     file_name = "list.csv"
-    header = "Hostname, Product,Version, Instance ID, Root Snapshot, Non Root Snapshot, Region, Encryption"
+    header = "Hostname, Product,Version, Instance ID, Root Snapshot, Non Root Snapshot, Region, Root Encryption, Non Root Encription"
     opened_file = open(file_name, 'a')
     opened_file.write(header)
     opened_file.close()
 
     for item in data.values():
         opened_file = open(file_name, 'a')
-        line = "\n" + item["Hostname"] + "," + item['Product'] + "," + item['Version'] + "," + item["Instance ID"] + "," + item["Root Snapshot"] + "," + item["Non Root Snapshot"] + "," + item["Region"] + ","+ str(item["Encryption"])
-        print(line)
+        line = "\n" + item["Hostname"] + "," + item['Product'] + "," + item['Version'] + "," + item["Instance ID"] + "," + item["Root Snapshot"] + "," + item["Non Root Snapshot"] + "," + item["Region"] + "," + str(item["Root Encryption"] + "," + str(item["Non Root Encription"])
+        #print(line)
         opened_file.write(line)
         opened_file.close()
 
