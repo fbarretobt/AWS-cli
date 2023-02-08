@@ -34,7 +34,7 @@ def list_instances(region):
                     for device in volumeinfo['Attachments']:
                         device=(device['Device'])
                         if device == rootdevice:
-                            rootdeviceSnapshot = snapshot
+                            rootsnapshot = snapshot
                         else:
                             nonrootsnapshot=snapshot
 
