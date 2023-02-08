@@ -23,9 +23,9 @@ def list_instances(region):
 
                 volume = ec2.describe_volumes(VolumeIds = [volumeID])
 
-                print(volume)
-                
-                print(devicename, volumeID)
+                for volumeinfo in volume['Volumes']:
+                    print(volumeinfo['Encryption'], volumeinfo['SnapshotId'])
+
 
                 if devicename != rootdevice :
                     nonrootdevice = devicename
