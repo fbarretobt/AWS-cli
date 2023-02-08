@@ -48,7 +48,7 @@ def list_instances(region):
                     version = tag['Value']
 
 
-            dict_info = {"Hostname":name, "Product":product,"Instance ID":instanceID, "Root Device":rootdevice, "Non root Device": nonrootdevice, "Root Snapshot": rootsnapshot, "Non Root Snapshot": nonrootsnapshot, "Region":region, "Encryption":encryption}
+            dict_info = {"Hostname":name, "Product":product,"Version":version, "Instance ID":instanceID, "Root Device":rootdevice, "Non root Device": nonrootdevice, "Root Snapshot": rootsnapshot, "Non Root Snapshot": nonrootsnapshot, "Region":region, "Encryption":encryption}
 
 
         count +=1
@@ -56,7 +56,28 @@ def list_instances(region):
         if count == 1:
             break        
 
-    return dict_info
+        create_csv(dict_info)
+
+    return 
+
+def create_csv(data):
+    file_name = "list.csv"
+    header = "Hostname, Product,Version, Instance ID, Root Snapshot, Non Root Snapshot, Region, Encryption"
+    opened_file = open(file_name, 'a')
+    opened_file.write(header)
+    opened_file.close()
+
+    for item in data.values():
+        opened_file = open(file_name, 'a')
+        key_list= list(item)
+        devicename = key_list[5]
+        line = "\n" + item["Hostname"] + "," + str(item['Product']) +"," + str(item['Product']) +"," + item["Instance ID"] + "," + str(item["Root Snapshot"]) + "," + str(item["Non Root Snapshot"]) + "," + str(item["Region"]) + ","+ str(item["Encryption"])
+        #print(line)
+        opened_file.write(line)
+        opened_file.close()
+    
+    
+    
 
 ##################################################################################
 ### define whihch region to use or loop all the regions 
