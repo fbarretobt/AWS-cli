@@ -14,8 +14,17 @@ def list_instances(region):
     count = 0
 
     for reservation in Instance_list['Reservations']:
-        for instance in x['Instances']:
-	        print(instance['InstanceId'])
+        for instance in reservation['Instances']:
+	        instanceID = (instance['InstanceId'])
+
+            for tag in instance['Tags']:
+                print(tag['Key'])
+               if tag['Key'] == "Name":
+                    name = tag['Value']
+               elif tag['Key'] == "Product":
+                    product = tag['Value']
+
+		        print(name, product)
 
         count +=1
         
