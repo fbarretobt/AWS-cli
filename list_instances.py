@@ -1,6 +1,5 @@
 from tracemalloc import Snapshot 
 import boto3
-import json
 import sys
 from datetime import datetime, timezone
 import argparse
@@ -16,6 +15,13 @@ def list_instances(region):
     for reservation in Instance_list['Reservations']:
         for instance in reservation['Instances']:
             instanceID = (instance['InstanceId'])
+            rootdevice = (instance["RootDeviceName"])
+
+            for device in instance['BlockDeviceMappings']:
+                devicename = (device['DeviceName'])
+                
+                if devicename != rootdevice :
+                    nonrootdevice = devicename
 
             for tag in instance['Tags']:
 
@@ -23,8 +29,14 @@ def list_instances(region):
                     name = tag['Value']
                elif tag['Key'] == "Product":
                     product = tag['Value']
+               elif tag['Key'] == "Version":
+                    version = tag['Value']
 
-            print(name, product)
+            volumes = ec2.describe_instance_attribute(InstanceId=instanceID, Attribute='blockDeviceMapping')
+
+            print(volumes)
+
+            print(name, product, instanceID, version, rootdevice, nonrootdevice)
 
         count +=1
         
