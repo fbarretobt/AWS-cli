@@ -21,7 +21,7 @@ def list_instances(region):
                 devicename = (device['DeviceName'])
                 volumeID = (device.get('Ebs', {}).get("VolumeId"))
 
-                volume = ec2.describe_volumes(VolumeId = volumeID)
+                volume = ec2.describe_volumes(VolumeIds = volumeID)
 
                 print(volume)
                 
