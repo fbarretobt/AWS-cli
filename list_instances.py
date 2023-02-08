@@ -19,7 +19,11 @@ def list_instances(region):
 
             for device in instance['BlockDeviceMappings']:
                 devicename = (device['DeviceName'])
-                volumeID = [(device.get('Ebs', {}).get("VolumeId"))]
+                volumeID = (device.get('Ebs', {}).get("VolumeId"))
+
+                volume = ec2_resource.volumes(VolumeId = volumeID)
+
+                print(volume)
                 
                 print(devicename, volumeID)
 
