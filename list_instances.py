@@ -34,7 +34,8 @@ def list_instances(region):
 
             instance = ec2_resource.Instance(instanceID)
             volumes = instance.volumes.all()
-            print (volumes)
+            for v in volumes:
+                print(v.id)
 
             #print(name, product, instanceID, version, rootdevice, nonrootdevice)
 
