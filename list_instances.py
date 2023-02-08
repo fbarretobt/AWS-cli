@@ -21,10 +21,10 @@ def list_instances(region):
                 devicename = (device['DeviceName'])
                 volumeID = (device.get('Ebs', {}).get("VolumeId"))
 
-                volume = ec2.describe_volumes(VolumeIds = [volumeID])
+            volume = ec2.describe_volumes(VolumeIds = [volumeID])
 
-                for volumeinfo in volume['Volumes']:
-                    print(volumeinfo['Encrypted'], volumeinfo['SnapshotId'])
+            for volumeinfo in volume['Volumes']:
+                print(volumeinfo['Encrypted'], volumeinfo['SnapshotId'])
 
 
                 if devicename != rootdevice :
