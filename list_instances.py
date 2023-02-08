@@ -1,4 +1,3 @@
-from tracemalloc import Snapshot 
 import boto3
 import sys
 from datetime import datetime, timezone
@@ -8,6 +7,7 @@ import botocore
 
 def list_instances(region):
     ec2 = boto3.client('ec2', region)
+    ec2_resource = boto3.resource('ec2', region)
     Instance_list = ec2.describe_instances()
 
     count = 0
@@ -32,11 +32,11 @@ def list_instances(region):
                elif tag['Key'] == "Version":
                     version = tag['Value']
 
-            volumes = ec2.describe_instance_attribute(InstanceId=instanceID, Attribute='blockDeviceMapping')
+            instance = ec2_resource.Instance(instanceID)
+            volumes = instance.volumes.all()
+            print (volumes)
 
-            print(volumes)
-
-            print(name, product, instanceID, version, rootdevice, nonrootdevice)
+            #print(name, product, instanceID, version, rootdevice, nonrootdevice)
 
         count +=1
         
