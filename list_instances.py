@@ -19,6 +19,7 @@ def list_instances(region):
 
             for device in instance['BlockDeviceMappings']:
                 devicename = (device['DeviceName'])
+                volumeID = [(device.get('Ebs', {}).get("VolumeId"))]
                 
                 if devicename != rootdevice :
                     nonrootdevice = devicename
@@ -32,12 +33,8 @@ def list_instances(region):
                elif tag['Key'] == "Version":
                     version = tag['Value']
 
-            instance = ec2_resource.Instance(instanceID)
-            volumes = instance.volumes.all()
-            for volume in volumes:
-                print(volume)
 
-            #print(name, product, instanceID, version, rootdevice, nonrootdevice)
+            print(name, product, instanceID, version, rootdevice, nonrootdevice, volumeID)
 
         count +=1
         
