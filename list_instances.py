@@ -11,8 +11,15 @@ def list_instances(region):
     ec2 = boto3.client('ec2', region)
     Instance_list = ec2.describe_instances()
 
-    for reservation in Instance_list['Reservations']:
+    count = 0
+
+    for reservation in Instance_list:
         print(reservation)
+
+        count +=1
+        
+        if count == 1:
+            break        
 
 ##################################################################################
 ### define whihch region to use or loop all the regions 
