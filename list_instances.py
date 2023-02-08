@@ -56,7 +56,7 @@ def list_instances(region):
         if count == 1:
             break        
 
-    create_csv(dict_info)
+    #create_csv(dict_info)
 
     print(dict_info)
 
@@ -73,7 +73,7 @@ def create_csv(data):
         opened_file = open(file_name, 'a')
         key_list= list(item)
         devicename = key_list[5]
-        line = "\n" + item["Hostname"] + "," + str(item['Product']) +"," + str(item['Product']) +"," + item["Instance ID"] + "," + str(item["Root Snapshot"]) + "," + str(item["Non Root Snapshot"]) + "," + str(item["Region"]) + ","+ str(item["Encryption"])
+        line = "\n" + item["Hostname"] + "," + str(item['version']) + "," + item['Product'] + "," + item["Instance ID"] + "," + item["Root Snapshot"] + "," + item["Non Root Snapshot"] + "," + item["Region"] + ","+ str(item["Encryption"])
         print(line)
         opened_file.write(line)
         opened_file.close()
