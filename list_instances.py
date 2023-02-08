@@ -11,7 +11,7 @@ def list_instances(region):
     Instance_list = ec2.describe_instances()
 
     count = 0
-
+    data_dict = {}
     for reservation in Instance_list['Reservations']:
 
         for instance in reservation['Instances']:
@@ -48,17 +48,17 @@ def list_instances(region):
                     version = tag['Value']
 
 
-            dict_info = {"Hostname":name, "Product":product,"Version":version, "Instance ID":instanceID, "Root Device":rootdevice, "Non root Device": nonrootdevice, "Root Snapshot": rootsnapshot, "Non Root Snapshot": nonrootsnapshot, "Region":region, "Encryption":encryption}
+            data_dict.update({"Hostname":name, "Product":product,"Version":version, "Instance ID":instanceID, "Root Device":rootdevice, "Non root Device": nonrootdevice, "Root Snapshot": rootsnapshot, "Non Root Snapshot": nonrootsnapshot, "Region":region, "Encryption":encryption})
 
 
         count +=1
         
-        if count == 1:
+        if count == 10:
             break        
 
-    create_csv(dict_info)
+    #create_csv(data_dict)
 
-    print(dict_info)
+    print(data_dict)
 
     return 
 
