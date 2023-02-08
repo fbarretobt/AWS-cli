@@ -53,12 +53,12 @@ def list_instances(region):
 
         count +=1
         
-        if count == 10:
+        if count == 20:
             break        
 
-    #create_csv(data_dict)
+    create_csv(data_dict)
 
-    print(data_dict)
+    #print(data_dict)
 
     return 
 
@@ -71,8 +71,6 @@ def create_csv(data):
 
     for item in data.values():
         opened_file = open(file_name, 'a')
-        key_list= list(item)
-        devicename = key_list[5]
         line = "\n" + item["Hostname"] + "," + item['version'] + "," + item['Product'] + "," + item["Instance ID"] + "," + item["Root Snapshot"] + "," + item["Non Root Snapshot"] + "," + item["Region"] + ","+ str(item["Encryption"])
         print(line)
         opened_file.write(line)
