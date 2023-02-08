@@ -77,7 +77,7 @@ def create_csv(data):
 
     for item in data.values():
         opened_file = open(file_name, 'a')
-        line = "\n" + item["Hostname"] + "," + item['Product'] + "," + item['Version'] + "," + item["Instance ID"] + "," + item["Root Snapshot"] + "," + item["Non Root Snapshot"] + "," + item["Region"] + "," + str(item["Root Encryption"] + "," + str(item["Non Root Encription"])
+        line = "\n" + item["Hostname"] + "," + item['Product'] + "," + item['Version'] + "," + item["Instance ID"] + "," + item["Root Snapshot"] + "," + item["Non Root Snapshot"] + "," + item["Region"] + "," + str(item["Encryption"])
         #print(line)
         opened_file.write(line)
         opened_file.close()
