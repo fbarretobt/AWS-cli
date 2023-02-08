@@ -9,7 +9,7 @@ import botocore
 
 def list_instances(region):
     ec2 = boto3.client('ec2', region)
-    Instance_list = ec2.describe-instances()
+    Instance_list = ec2.describe_instances()
 
     for instance in Instance_list['Instance']:
         print(instance['InstanceId'])
