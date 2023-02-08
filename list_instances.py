@@ -18,7 +18,7 @@ def list_instances(region):
             instanceID = (instance['InstanceId'])
 
             for tag in instance['Tags']:
-               print(tag['Key'])
+
                if tag['Key'] == "Name":
                     name = tag['Value']
                elif tag['Key'] == "Product":
