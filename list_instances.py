@@ -32,6 +32,20 @@ def list_instances(region):
 
                 volume = ec2.describe_volumes(VolumeIds = [volumeID])
 
+                snapshots = ec2.describe_snapshots(Filters=[{'Name':'volume-id', 'Values': [ volumeID] }])
+
+                for snapshot in snapshots["Snapshots"]:
+
+                    days_old = (datetime.now(timezone.utc) - snapshot['StartTime']).days
+                    seconds = (datetime.now(timezone.utc) - snapshot['StartTime']).total_seconds()
+                    hours = int(seconds // 3600)
+                    minutes = int((seconds//60)%60)
+
+                    print(snapshot['SnapshotId'])
+                    print(snapshot['SnapshotId'])
+                    print(hours, minutes)
+
+
                 for volumeinfo in volume['Volumes']:
                     encryption = volumeinfo['Encrypted']
                     snapshot = volumeinfo['SnapshotId']
