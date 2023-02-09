@@ -43,7 +43,7 @@ def list_instances(region):
 
 
 
-                    if hours >= 4 :
+                    if hours < 4 :
                         print(hours)
                         print(snapshot['SnapshotId'],snapshot['Encrypted'],hours )
 
