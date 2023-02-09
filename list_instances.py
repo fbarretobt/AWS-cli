@@ -39,7 +39,7 @@ def list_instances(region):
                     for device in volumeinfo['Attachments']:
                         device=(device['Device'])
                         if device == rootdevice:
-                            rootsnapshot = snapshot
+                            basesnapshot = snapshot
                             rootencryption = encryption
 
 
@@ -57,10 +57,13 @@ def list_instances(region):
 
                     if hours < 4 :
                         
-                        if rootsnapshot != snapshot['SnapshotId']:
+                        if basesnapshot != snapshot['SnapshotId']:
 
                             nonrootsnapshot=snapshot['SnapshotId']
                             nonrootencryption = snapshot['Encrypted']
+                        else:
+                            rootsnapshot=snapshot['SnapshotId']
+                            rootencryption = snapshot['Encrypted']
 
                     if nonrootencryption == "True" and rootencryption == "True" :
 
