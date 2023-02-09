@@ -13,8 +13,8 @@ def list_snapshots(region):
 
     snapshot_list = ec2.describe_snapshots(OwnerIds=[ 'self' ])
 
-    for instance in snapshot_list["Snapshots"]:
-        print(instance)
+    for snapshot in snapshot_list["Snapshots"]:
+        print(snapshot['SnapshotId'])
 
 
 
