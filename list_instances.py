@@ -32,6 +32,18 @@ def list_instances(region):
 
                 volume = ec2.describe_volumes(VolumeIds = [volumeID])
 
+
+                for volumeinfo in volume['Volumes']:
+                    encryption = volumeinfo['Encrypted']
+                    snapshot = volumeinfo['SnapshotId']
+                    for device in volumeinfo['Attachments']:
+                        device=(device['Device'])
+                        if device == rootdevice:
+                            rootsnapshot = snapshot
+                            rootencryption = snapshot ['Encrypted']
+
+
+
                 snapshots = ec2.describe_snapshots(Filters=[{'Name':'volume-id', 'Values': [ volumeID] }])
 
                 for snapshot in snapshots["Snapshots"]:
@@ -44,21 +56,13 @@ def list_instances(region):
 
 
                     if hours < 4 :
-                        print(hours)
-                        print(snapshot['SnapshotId'],snapshot['Encrypted'],hours )
+                        
+                        if rootsnapshot != snapshot['SnapshotId']:
 
-
-                for volumeinfo in volume['Volumes']:
-                    encryption = volumeinfo['Encrypted']
-                    snapshot = volumeinfo['SnapshotId']
-                    for device in volumeinfo['Attachments']:
-                        device=(device['Device'])
-                        if device == rootdevice:
-                            rootsnapshot = snapshot
-                            rootencryption = encryption
-                        else:
-                            nonrootsnapshot=snapshot
+                            nonrootsnapshot=snapshot ['SnapshotId']
                             nonrootencryption = encryption
+
+
 
             for tag in instance['Tags']:
 
