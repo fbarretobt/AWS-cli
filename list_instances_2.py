@@ -16,4 +16,4 @@ def list_snapshots(region):
     snapshot_list = ec2_resource.Snapshot.all()
 
     for instance in instaces_list:
-        print(instance.volumes.all())
+        print(instance)
