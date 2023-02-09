@@ -11,7 +11,7 @@ def list_snapshots(region):
     ec2_resource = boto3.resource('ec2', region)
     ec2 = boto3.client('ec2', region)
 
-    snapshot_list = ec2.describe_snapshots(OwnerIds=[ 'string' ])
+    snapshot_list = ec2.describe_snapshots(OwnerIds=[ 'self' ])
     instaces_list = ec2_resource.Instance.all()
     volume_list = ec2_resource.Volume.all()
 
