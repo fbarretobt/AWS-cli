@@ -72,50 +72,54 @@ def get_instance_info(instanceID, region, ec2_resource):
 
 def get_snapshot_info(snapshotID, region, ec2_resource):
 
-    snapshot = ec2_resource.Snapshot(snapshotID)
+    try :
+
+        snapshot = ec2_resource.Snapshot(snapshotID)
         
-    if snapshot.tags is not None:
+        if snapshot.tags is not None:
         
-        if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
+            if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
 
-            instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', snapshot.tags), None)
-            instanceID = instance_info["Value"]
+                instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', snapshot.tags), None)
+                instanceID = instance_info["Value"]
 
-            name_info=next(filter(lambda obj: obj.get('Key') == 'Name', snapshot.tags), None)
-            name=name_info["Value"]
+                name_info=next(filter(lambda obj: obj.get('Key') == 'Name', snapshot.tags), None)
+                name=name_info["Value"]
 
-            device_info=next(filter(lambda obj: obj.get('Key') == 'DeviceName', snapshot.tags), None)
-            devicename=device_info["Value"]
-            instanceinfo = get_instance_info(instanceID, region, ec2_resource)
-
-            
-
-            root=next(filter(lambda obj: obj.get('Key') == 'Root', snapshot.tags), None)
+                device_info=next(filter(lambda obj: obj.get('Key') == 'DeviceName', snapshot.tags), None)
+                devicename=device_info["Value"]
+                instanceinfo = get_instance_info(instanceID, region, ec2_resource)
 
             
 
-            if name in data_dict.keys():
-                print(name,"already added ")
-            else:
-                data_dict[name] = {"Name":name, "Product":instanceinfo['Product'], "Version":instanceinfo['Version'], "Instance Id": instanceID, "Region":region, "Root Snapshot":" ", "Root Encryption":"", "Non Root Snapshot":" ", "Non Root Encryption":""}
+                root=next(filter(lambda obj: obj.get('Key') == 'Root', snapshot.tags), None)
 
-            if root["Value"] == "0":
-                rootdevice = snapshotID
-                rootEncrypted = snapshot.encrypted
-                data_dict[name].update({"Root Snapshot":rootdevice, "Root Encryption":rootEncrypted })
-            else:
-                nonrootdevice = snapshotID
-                nonrootEncrypted = snapshot.encrypted
-                data_dict[name].update({"Non Root Snapshot":nonrootdevice, "Non Root Encryption":nonrootEncrypted})
+            
+
+                if name in data_dict.keys():
+                    print(name,"already added ")
+                else:
+                    data_dict[name] = {"Name":name, "Product":instanceinfo['Product'], "Version":instanceinfo['Version'], "Instance Id": instanceID, "Region":region, "Root Snapshot":" ", "Root Encryption":"", "Non Root Snapshot":" ", "Non Root Encryption":""}
+
+                if root["Value"] == "0":
+                    rootdevice = snapshotID
+                    rootEncrypted = snapshot.encrypted
+                    data_dict[name].update({"Root Snapshot":rootdevice, "Root Encryption":rootEncrypted })
+                else:
+                    nonrootdevice = snapshotID
+                    nonrootEncrypted = snapshot.encrypted
+                    data_dict[name].update({"Non Root Snapshot":nonrootdevice, "Non Root Encryption":nonrootEncrypted})
 
 
 
 
             
 
-    else :
+        else :
+            pass
+
+    except:
         pass
-
 
     return 
 
