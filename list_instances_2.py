@@ -17,7 +17,7 @@ def list_snapshots(region):
         volumeID = snapshot['VolumeId']
         snapshotID = snapshot['SnapshotId']
 
-        snapshot = ec2_resource.Snapshot(snapshotid)
+        snapshot = ec2_resource.Snapshot(snapshotID)
         
         if snapshot.tags is not None:
         
