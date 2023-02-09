@@ -59,7 +59,7 @@ def list_instances(region):
                         
                         if rootsnapshot != snapshot['SnapshotId']:
 
-                            nonrootsnapshot=snapshot ['SnapshotId']
+                            nonrootsnapshot=snapshot['SnapshotId']
                             nonrootencryption = encryption
 
 
