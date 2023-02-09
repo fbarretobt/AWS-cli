@@ -40,7 +40,7 @@ def list_instances(region):
                         device=(device['Device'])
                         if device == rootdevice:
                             rootsnapshot = snapshot
-                            rootencryption = snapshot['Encrypted']
+                            rootencryption = encryption
 
 
 
