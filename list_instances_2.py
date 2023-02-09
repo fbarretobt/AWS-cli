@@ -4,7 +4,6 @@ import sys
 from datetime import datetime, timezone
 import argparse
 import botocore
-import printt
 
 
 
@@ -40,7 +39,7 @@ def list_snapshots(region):
                     except:
                         name ="No device Name"
                 
-                printt(name, devicename, instance)
+                print(name, devicename, instance)
             else :
                 pass
         except:
