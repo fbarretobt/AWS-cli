@@ -17,32 +17,29 @@ def list_snapshots(region):
         volumeID = snapshot['VolumeId']
         snapshotID = snapshot['SnapshotId']
 
-        try :
-            snapshot = ec2_resource.Snapshot(snapshotid)
+        snapshot = ec2_resource.Snapshot(snapshotid)
         
-            if snapshot.tags is not None:
+        if snapshot.tags is not None:
         
-                if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
-                    try :
-                        instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', snapshot.tags), None)
-                        instance = instance_info["Value"]
-                    except:
-                        instance = "No Instance ID Tag"
-                    try :
-                        name_info=next(filter(lambda obj: obj.get('Key') == 'Name', snapshot.tags), None)
-                        name=name_info["Value"]
-                    except:
-                        name ="No Name Tag"
-                    try :
-                        device_info=next(filter(lambda obj: obj.get('Key') == 'DeviceName', snapshot.tags), None)
-                        devicename=device_info["Value"]
-                    except:
-                        name ="No device Name"
+            if next(filter(lambda obj: obj.get('Key') == 'DR-Tier', snapshot.tags), None):
+                try :
+                    instance_info = next(filter(lambda obj: obj.get('Key') == 'instance-id', snapshot.tags), None)
+                    instance = instance_info["Value"]
+                except:
+                    instance = "No Instance ID Tag"
+                try :
+                    name_info=next(filter(lambda obj: obj.get('Key') == 'Name', snapshot.tags), None)
+                    name=name_info["Value"]
+                except:
+                    name ="No Name Tag"
+                try :
+                    device_info=next(filter(lambda obj: obj.get('Key') == 'DeviceName', snapshot.tags), None)
+                    devicename=device_info["Value"]
+                except:
+                    name ="No device Name"
                 
-                print(name, devicename, instance)
-            else :
-                pass
-        except:
+            print(name, devicename, instance)
+        else :
             pass
 
 
