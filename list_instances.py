@@ -41,6 +41,7 @@ def list_instances(region):
                         if device == rootdevice:
                             basesnapshot = snapshot
                             rootencryption = encryption
+                            rootsnapshot = basesnapshot
 
 
 
@@ -53,7 +54,6 @@ def list_instances(region):
                     hours = int(seconds // 3600)
                     minutes = int((seconds//60)%60)
 
-                    rootsnapshot = ""
 
                     if hours < 4 :
                         
