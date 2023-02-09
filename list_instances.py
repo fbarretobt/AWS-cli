@@ -43,10 +43,11 @@ def list_instances(region):
 
                     print(snapshot)
 
-                    print(snapshot['SnapshotId'],snapshot['Encrypted'],hours )
+
 
                     if hours > 4 :
                         print(hours)
+                        print(snapshot['SnapshotId'],snapshot['Encrypted'],hours )
 
 
                 for volumeinfo in volume['Volumes']:
