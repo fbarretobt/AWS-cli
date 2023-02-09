@@ -41,9 +41,7 @@ def list_instances(region):
                     hours = int(seconds // 3600)
                     minutes = int((seconds//60)%60)
 
-                    print(snapshot['SnapshotId'])
-                    print(snapshot['SnapshotId'])
-                    print(hours, minutes)
+                    print(snapshot['SnapshotId'],snapshot['Encrypted'],hours, minutes )
 
 
                 for volumeinfo in volume['Volumes']:
