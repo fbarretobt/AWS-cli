@@ -41,10 +41,10 @@ def list_snapshots(region):
                         name ="No device Name"
                 
                 printt(name, devicename, instance)
-        else :
+            else :
+                pass
+        except:
             pass
-    except:
-        pass
 
 
 
