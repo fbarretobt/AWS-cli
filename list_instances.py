@@ -41,11 +41,9 @@ def list_instances(region):
                     hours = int(seconds // 3600)
                     minutes = int((seconds//60)%60)
 
-                    print(snapshot)
 
 
-
-                    if hours > 4 :
+                    if hours >= 4 :
                         print(hours)
                         print(snapshot['SnapshotId'],snapshot['Encrypted'],hours )
 
