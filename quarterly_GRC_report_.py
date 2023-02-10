@@ -149,16 +149,32 @@ def convert_csv(items_dict, region):
 def region(region):
 
     if region == "all":
-        e = boto3.client('ec2')
-        regions_list = e.describe_regions()
-        regions = regions_list["Regions"]
-        region_count=len(regions)
+        regions = [ "ap-south-1",
+                    "eu-north-1",
+                    "eu-west-3" ,
+                    "eu-west-2" ,
+                    "eu-west-1" ,
+                    "ap-northeast-3",
+                    "ap-northeast-2",
+                    "ap-northeast-1" ,
+                    "ca-central-1" ,
+                    "sa-east-1"  ,
+                    "ap-southeast-1" ,
+                    "ap-southeast-2" ,
+                    "eu-central-1" ,
+                    "us-east-1",
+                    "us-east-2" ,
+                    "us-west-1" ,
+                    "us-west-2" ,
+                  ]
         count=0 
         for region in regions:
+            region_count=len(regions)
+ 
             count +=1 
-            print("Working on region", count, "of ", region_count, "(", region['RegionName'], ")")
+            print("Working on region", count, "of ", region_count, "(", region, ")")
 
-            list_snapshots(region['RegionName'])
+            list_snapshots(region)
     else:
 
         list_snapshots(region)

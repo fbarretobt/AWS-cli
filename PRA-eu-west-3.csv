@@ -1,0 +1,11 @@
+Hostname, Product, Version, Instance Id, Region,Root Snapshot,Root Encryption, Non Root Snapshot,Non Root Encryption
+ alfanar.beyondtrustcloud.com,bpam,6.0.1,i-0e3ee10c6373b1c0d,ap-south-1,snap-069349ffe32468521,True,snap-064c7680ee198f7da,True
+ pracs.beyondtrustcloud.com,bpam,6.0.1,i-0e0f630f82c11a20a,ap-south-1,snap-082b9bcbeb273e1b2,True,snap-0b1587aacaf6377a2,True
+ emcure.beyondtrustcloud.com,bpam,6.0.1,i-068179d08e6387eb2,ap-south-1,snap-01d80aec814f6544a,True,snap-04e6476c1ae899b26,True
+ gac.beyondtrustcloud.com,bpam,5.4.0,i-0748add4099a8600b,ap-south-1,snap-0076119dd37041f46,True,snap-06bba5a0b0c3b353f,True
+ agthia.beyondtrustcloud.com,bpam,6.0.1,i-0da1e148e39b8605d,ap-south-1,snap-048a66f946925f974,True,snap-05364156cac17528d,True
+ havmor.beyondtrustcloud.com,bpam,6.0.1,i-0b3e01ebaaa8a7a46,ap-south-1,snap-014ff99e73ebef4c8,True,snap-077bc69a2c8efa128,True
+ c45691-IN-W-1.beyondtrustcloud.com,bpam,6.0.1,i-04addfb01995da7f1,ap-south-1,snap-0c38027ad922235b2,True,snap-0d7754dfa20e56173,True
+ adanielectricity.beyondtrustcloud.com,bpam,6.0.1,i-03b3fd7ea35a91063,ap-south-1,snap-062263698ea3f6285,True,snap-0f6041c71fd084bdb,True
+ suratnationalbank.beyondtrustcloud.com,bpam,6.0.1,i-0aae4cdc3b4de9084,ap-south-1,snap-007f186c777e6bdb3,True,snap-0823d0ad98fd25a8f,True
+ wiproremoteaccess.beyondtrustcloud.com,bpam,5.4.0,i-03d7fd0cface8471b,ap-south-1,snap-036d37a60c0de6bbf,True,snap-08cf88874b02d5e1c,True
