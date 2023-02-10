@@ -128,7 +128,7 @@ def get_snapshot_info(snapshotID, region, ec2_resource):
 ##################################################################################
 ### convert output to csv  
 def convert_csv(items_dict, region):
-    file_name = region+".csv"
+    file_name = account_id+"_"+region+".csv"
     header = "Hostname, Product, Version, Instance Id, Region,Root Snapshot,Root Encryption, Non Root Snapshot,Non Root Encryption"
     opened_file = open(file_name, 'a')
     opened_file.write(header)
@@ -136,8 +136,6 @@ def convert_csv(items_dict, region):
 
     for item in items_dict.values():
         opened_file = open(file_name, 'a')
-        key_list= list(item)
-        devicename = key_list[5]
         line = "\n "+item['Name']+","+item['Product']+","+item['Version']+","+item['Instance Id']+","+item['Region']+","+item['Root Snapshot']+","+str(item['Root Encryption'])+","+item['Non Root Snapshot'] +","+str(item['Non Root Encryption'])
         #print(line)
         opened_file.write(line)
