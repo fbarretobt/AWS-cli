@@ -10,6 +10,19 @@ import botocore
 client = boto3.client("sts")
 account_id = client.get_caller_identity()["Account"]
 
+if account_id == "642061994812":
+    account_id = "ENG-SRA-Cloud-Prod-PRA"
+if account_id == "506552624801":
+    account_id = "ENG-SRA-Cloud-Prod-RS"
+if account_id == "337145216121":
+    account_id = "ENG-SRA-Cloud-QA-PRA"
+if account_id == "704752970543":
+    account_id = "ENG-SRA-Cloud-QA-RS"
+if account_id == "396499902956":
+    account_id = "ENG-SRA-ENG-Infra"
+if account_id == "628082943242 ":
+    account_id = "ENG-SRA-Sandbox"
+
 print("Running on ", account_id)
 
 print("#")
